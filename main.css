@@ -31,8 +31,8 @@ p, button, input[type=submit], td, .badge {
 	background-color: #247D70;
 }
 
-#abgcalc {
-	min-height: 500px;
+#abgcalc, #results {
+	min-height: 600px;
 }
 
 form, #units {
@@ -50,12 +50,16 @@ form, #units {
 	font-weight: bold;
 }
 
+#reminder {
+	text-align: center;
+}
+
 td {
 	text-align: center;
 	border: 1px solid #34B3A0;
 }
 
-#results, .disorders, .abdisorders {
+#results, .disorders, .abdisorders, #submitanion {
 	display: none;
 }
 
@@ -68,6 +72,25 @@ td {
 	background-color: #34B3A0;
 	margin: 20px auto;
 	font-size: 18px;
+}
+
+#submitanion label {
+	margin: auto 10px;
+}
+
+.checkanion {
+	border: none;
+	border-radius: 2px;
+	padding: 5px 10px;
+	color: white;
+	background-color: #34B3A0;
+	font-size: 14px;
+	width: 195px;
+	margin-left: 20px;
+}
+
+.glyphicon {
+	color: #34B3A0;
 }
 
 .aetiologies {

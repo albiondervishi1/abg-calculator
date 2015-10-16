@@ -9,9 +9,9 @@ $(document).ready(function(){
         $(this).addClass('active');
         $('.US').hide();
         $('.SI').show();
-        $('form').data("conversion", 0.133322368);
-        $('#PaCO2, #PaO2').attr("step", 0.1);
-        alert($('form').data("conversion"));
+        $('form[name=abgcalc]').data("conversion", 0.133322368);
+        $('#PaCO2, #PaO2').attr("step", 0.01);
+        alert($('form[name=abgcalc]').data("conversion"));
         units = "kPa";
     });
     $('.US-toggle').click(function(){
@@ -21,25 +21,25 @@ $(document).ready(function(){
         $('.SI-toggle').css("background-color", "#34B3A0");
         $('.SI').hide();
         $('.US').show();
-        $('form').data("conversion", 1);
-        $('#PaCO2, #PaO2').attr("step", 1);
-        alert($('form').data("conversion"));
+        $('form[name=abgcalc]').data("conversion", 1);
+        $('#PaCO2, #PaO2').attr("step", 0.1);
+        alert($('form[name=abgcalc]').data("conversion"));
         units = "mmHg";
     });
-    $('form').submit(function(event){
+    $('form[name=abgcalc]').submit(function(event){
         event.preventDefault();
         $('#units').hide();
-        alert("Conversion rate: " + $('form').data("conversion"));
+        alert("Conversion rate: " + $('form[name=abgcalc]').data("conversion"));
         var pH = parseFloat($('input[name=pH]').val());
-        var PaO2 = Math.round(($('input[name=PaO2]').val()) / $('form').data("conversion"));
-        var PaCO2 = Math.round(($('input[name=PaCO2]').val()) / $('form').data("conversion"));
+        var PaO2 = parseFloat((($('input[name=PaO2]').val()) / $('form[name=abgcalc]').data("conversion")).toFixed(1));
+        var PaCO2 = parseFloat((($('input[name=PaCO2]').val()) / $('form[name=abgcalc]').data("conversion")).toFixed(1));
         var HCO3 = parseFloat($('input[name=HCO3]').val());
         alert("pH: " + pH + " " + typeof pH);
         alert("PaO2: " + PaO2 + " " + typeof PaO2);
         alert("PaCO2: " + PaCO2 + " " + typeof PaCO2);
         alert("HCO3: " + HCO3 + " " + typeof HCO3);
         //tabulating user's inputs
-        $('.submitted-values').append("<table class='table'><tr><td>pH <span class='badge'>" + pH + "</span></td><td>P<sub>a</sub>O<sub>2</sub> <span class='badge'>" + Math.round(PaO2 * $('form').data("conversion"))  + units + "</span></td><td>P<sub>a</sub>CO<sub>2</sub> <span class='badge'>" + Math.round(PaCO2 * $('form').data("conversion")) + units + "</span></td><td>HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + "mmEq/L</span></td></tr></table>")
+        $('.submitted-values').append("<div class='table-responsive'><table class='table'><tr><td>pH <span class='badge'>" + pH + "</span></td><td>P<sub>a</sub>O<sub>2</sub> <span class='badge'>" + Math.round(PaO2 * $('form[name=abgcalc]').data("conversion"))  + units + "</span></td><td>P<sub>a</sub>CO<sub>2</sub> <span class='badge'>" + Math.round(PaCO2 * $('form[name=abgcalc]').data("conversion")) + units + "</span></td><td>HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + "mmEq/L</span></td></tr></table></div>")
         //checking validity of sample
         var calculatedH = (24 * PaCO2)/HCO3;
         alert("calculated H: " + calculatedH + " " + typeof calculatedH);
@@ -48,7 +48,7 @@ $(document).ready(function(){
         alert ("Is pH same as calculatedpH?: " + (pH === calculatedpH));
         if (pH !== calculatedpH) {
             $('.validity').addClass('alert alert-danger');
-            $('.validity').html("<strong>Caution: </strong>Your pH and a calculated H<sup>+</sup> using a modified Henderson-Hasselbach equation do not match. Your ABG might be invalid.");
+            $('.validity').html("<strong>Caution: </strong>Calculated pH is " + calculatedpH + " using a modified Henderson-Hasselbach equation. If this differs significantly from the ABG pH then your ABG might be invalid.");
         }
         //declaring variables for global scope
         var secondary = 0;
@@ -61,7 +61,7 @@ $(document).ready(function(){
         //declaring disorders
         var respiratoryAcidosis = "Respiratory acidosis";
         var respiratoryAlkalosis = "Respiratory alkalosis";
-        var metabolicAcidosis = "Metabolic acidosis";
+        var metabolicAcidosis = "Metabolic acidosis <button type='button' class='checkanion'>Check Anion Gap</button>";
         var metabolicAlkalosis = "Metabolic alkalosis";
         //acidaemia pathway
         if (pH < 7.35) {
@@ -259,7 +259,7 @@ $(document).ready(function(){
             alert("Secondary: " + secondary + " " + typeof secondary);
             alert(primary !== "There is no acid-base disturbance");
         }
-        //We log result to console
+        //We log acid-base result to console
         $(".acidbase").append("<p><strong>Primary:</strong> " + primary + "</p>");
         $(".acidbase").append("<p><strong>Secondary:</strong> " + secondary + "</p>");
         if (onset != 0) {
@@ -269,6 +269,50 @@ $(document).ready(function(){
             $(".acidbase").append("<div class='row' id='suggestions'><div class='col-xs-6'><a class='aetiologies suggested' href='#suggestions'>Get Suggested Aetiologies</a></div><div class='col-xs-6'><button id='reanalyse'>Analyse another ABG</button></div></div>");
             $('#results > #reanalyse').hide();
         }
+        //expands anion gap form
+        $('.checkanion').click(function(){
+            if ($('.checkanion').hasClass('toggled')) {
+                $('#submitanion').hide();
+                $('.checkanion').removeClass('toggled').text("Check Anion Gap");
+                $('#submitanion input[type=number]').val(0);
+            } else {
+                $('.checkanion').closest('.acidbase').find('p').first().after($('#submitanion').show());
+                $('.checkanion').addClass('toggled').text("Close Anion Gap Calculator");
+            }
+        });
+        //anion gap calculator
+        $('#submitanion').submit(function(){
+            var sodium = parseInt($('#sodium').val());
+            var chloride = parseInt($('#chloride').val());
+            alert("Sodium: " + sodium + " " + typeof sodium);
+            alert("Chloride: " + chloride + " " + typeof chloride);
+            var aniongapValue = sodium - chloride - HCO3;
+            alert("Anion gap: " + aniongapValue + typeof aniongapValue);
+            $('tr').append("<td>Na<sup>+</sup> <span class='badge'>" + sodium + "mmol/L </span></td><td>Cl<sup>-</sup> <span class='badge'>" + chloride + "mmol/L</span></td>");
+            $('#submitanion input[type=number]').val(0);
+            $('#submitanion, .checkanion').hide();
+            if (aniongapValue > 12) {
+                aniongapRatio = (aniongapValue - 12) / (24 - HCO3);
+                if (aniongapRatio > 2) {
+                    var aniongap = "High anion gap (" + aniongapValue + ") - a concurrent metabolic alkalosis is likely to be present";
+                } else if (aniongapRatio < 1) {
+                    var aniongap = "High anion gap (" + aniongapValue + ") - a concurrent normal anion-gap metabolic acidosis is likely to be present";
+                } else {
+                    var aniongap = "High anion gap (" + aniongapValue + ") - pure anion gap acidosis";
+                }
+            } else {
+                var aniongap = "Normal anion gap (" + aniongapValue + ")";
+            }
+            $(".acidbase").find('p').last().after("<p><strong>Anion Gap:</strong> " + aniongap + "</p>");
+            if (aniongapValue <= 12) {
+                $(".acidbase").find('p').last().after("<p><span class='glyphicon glyphicon-minus-sign'></span> In patients with hypoalbuminemia the normal anion gap is lower than 12mmol/L - in these patients the anion gap is about 2.5 mEq/L lower for each 1 gm/dL decrease in the plasma albumin concentration </p>");
+            }
+            if (aniongapValue > 12) {
+                $(".acidbase").find('p').last().after("<p><span class='glyphicon glyphicon-minus-sign'></span>  Consider calculating the osmolal gap if the anion gap cannot be explained by an obvious cause or toxic ingestion is suspected. The osmolal gap formula is:  Plasma Osmolality - 2*(Na<sup>+</sup> mmol/L) + (glucose mmol/L)/18 + (urea mmol/L)/2.8 + 1.25*(ethanol mmol/L)</p>");
+                $(".acidbase").find('p').last().after("<p><span class='glyphicon glyphicon-minus-sign'></span>  Please note that the disorder suggested after the anion gap value is based on variability from normal anion gap- thus this will no be accurate for patients with hypoalbuminemia as their normal anion gap is lower than 12mmol/L - in these patients the anion gap is about 2.5 mEq/L lower for each 1 gm/dL decrease in the plasma albumin concentration </p>");
+            }
+        });
+        //toggle panels suggested aetiologies panels into view
         $('.aetiologies').click(function(){
             if ($('.aetiologies').hasClass('suggested')) {
                 $('.suggested').addClass('closeSuggested').removeClass('suggested').text("Close Suggested Aetiologies");
@@ -308,6 +352,9 @@ $(document).ready(function(){
                 if (secondary === metabolicAlkalosis) {
                     $('#results').append($('#metabolic-alkalosis').html());
                 }
+                if (aniongapRatio > 2) {
+                    $('#results').append($('#metabolic-alkalosis').html());
+                }
             } else {
                 $('.closeSuggested').addClass('suggested');
                 $('.closeSuggested').text("Get Suggested Aetiologies");
@@ -315,7 +362,7 @@ $(document).ready(function(){
                 $('#results .panel').remove();
             }
         });
-        $("form").fadeOut("600");
+        $("form[name=abgcalc]").fadeOut("600");
         $("#results").delay("600").slideDown("600");
         $('#reanalyse').click(function(){
             $(".acidbase p, .acidbase button, #results .panel, table").remove()
@@ -324,7 +371,7 @@ $(document).ready(function(){
             $("#results").css('display', 'none');
             $('input[type=number]').val(0);
             $('#units, #results > #reanalyse').show();
-            $("form").show();
+            $("form[name=abgcalc]").show();
         });
     });
 });

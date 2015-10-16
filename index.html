@@ -46,7 +46,7 @@
 						<label for="PaO2" class="col-xs-2 control-label">P<sub>a</sub>O<sub>2</sub></label>
 						<div class="col-xs-7">
 							<div class="input-group">
-								<input type="number" min="1" step="1" class="form-control" id="PaO2" name="PaO2">
+								<input type="number" min="1" step="0.1" class="form-control" id="PaO2" name="PaO2">
 								<div class="input-group-addon"><span class="US">mmHg</span><span class="SI">kPa</span></div>
 							</div>
 						</div>
@@ -57,7 +57,7 @@
 						<label for="PaCO2" class="col-xs-2 control-label">P<sub>a</sub>CO<sub>2</sub></label>
 						<div class="col-xs-7">
 							<div class="input-group">
-								<input type="number" min="1" step="1" class="form-control" id="PaCO2" name="PaCO2">
+								<input type="number" min="1" step="0.1" class="form-control" id="PaCO2" name="PaCO2">
 								<div class="input-group-addon"><span class="US">mmHg</span><span class="SI">kPa</span></div>
 							</div>
 						</div>
@@ -68,13 +68,14 @@
 						<label for="HCO3" class="col-xs-2 control-label">HCO<sub>3</sub><sup>-</sup></label>
 						<div class="col-xs-7">
 							<div class="input-group">
-								<input type="number" min="1" step="1" class="form-control" id="HCO3" name="HCO3">
+								<input type="number" min="1" step="0.1" class="form-control" id="HCO3" name="HCO3">
 								<div class='input-group-addon'>mEq/L</div>
 							</div>
 						</div>
 						<p class="form-control-static col-xs-3">22-26</p>
 					</div>
-					<input type="submit">
+					<p id="reminder">Please ensure you have chosen the right units</p>
+					<input type="submit" value="Analyse Gas">
 				</form>	
 				<div id="results">
 					<div class="submitted-values">
@@ -88,6 +89,23 @@
 					</div>
 					<div class="acidbase">
 						<h2>Acid-Base Disorder:</h2>
+						<form role="form" class="form-inline" id="submitanion">
+							<div class="form-group">
+    							<label for="sodium">Na<sup>+</sup></label>
+    							<div class="input-group">
+    								<input type="number" min="1" step="1" value="0" class="form-control" id="sodium" required>
+    								<div class="input-group-addon">mmol/L</div>
+    							</div>
+  							</div>
+  							<div class="form-group">
+    							<label for="chloride">Cl<sup>-</sup></label>
+    							<div class="input-group">
+    								<input type="number" min="1" step="1" value="0" class="form-control" id="chloride" required>
+    								<div class="input-group-addon">mmol/L</div>
+    							</div>
+  							</div>
+  							<input type="submit" value="Check Anion Gap">
+						</form>
 					</div>
 					<button id="reanalyse">Analyse another ABG</button>
 				</div>
