@@ -47,6 +47,7 @@ $(document).ready(function(){
         alert("calculatedpH: " + calculatedpH + typeof calculatedpH);
         alert ("Is pH same as calculatedpH?: " + (pH === calculatedpH));
         if (pH !== calculatedpH) {
+            $('.validity').addClass('alert alert-danger');
             $('.validity').html("<strong>Caution: </strong>Your pH and a calculated H<sup>+</sup> using a modified Henderson-Hasselbach equation do not match. Your ABG might be invalid.");
         }
         //declaring variables for global scope
@@ -57,6 +58,11 @@ $(document).ready(function(){
                 primary = "Unable to ascertain a primary disorder.";
                 secondary = "Unable to ascertain if secondary disorder present.";
         };
+        //declaring disorders
+        var respiratoryAcidosis = "Respiratory acidosis";
+        var respiratoryAlkalosis = "Respiratory alkalosis";
+        var metabolicAcidosis = "Metabolic acidosis";
+        var metabolicAlkalosis = "Metabolic alkalosis";
         //acidaemia pathway
         if (pH < 7.35) {
             var PaCO2Change = (PaCO2 - 40 )/ 40;
@@ -82,9 +88,9 @@ $(document).ready(function(){
                     var expectedHCO3 = Math.round(3.5 * PaCO2Change / 10 + 24);
                     alert("Expected chronic HCO3: " + expectedHCO3 + " " + typeof expectedHCO3);
                     if (HCO3 > expectedHCO3) {
-                        secondary = "Metabolic alkalosis (part compensating)";
+                        secondary = metabolicAlkalosis;
                     } else if (HCO3 < expectedHCO3) {
-                        secondary = "Metabolic acidosis";
+                        secondary = metabolicAcidosis;
                     } else {
                         secondary = "None";
                     }
@@ -92,9 +98,9 @@ $(document).ready(function(){
                     var expectedHCO3 = Math.round(PaCO2Change / 10 + 24);
                     alert("Expected acute HCO3: " + expectedHCO3 + " " + typeof expectedHCO3);
                     if (HCO3 > expectedHCO3 + 3) {
-                        secondary = "Metabolic alkalosis (part compensating)";
+                        secondary = metabolicAlkalosis;
                     } else if (HCO3 < expectedHCO3 - 3) {
-                        secondary = "Metabolic acidosis";
+                        secondary = metabolicAcidosis;
                     } else {
                         secondary = "None";
                     }
@@ -105,9 +111,9 @@ $(document).ready(function(){
             function metabolicAcidosisCompensation () {
                 var expectedPaCO2 = Math.round((1.5 * HCO3) + 8);
                 if (PaCO2 > (expectedPaCO2 + 2)) {
-                    secondary = "Respiratory acidosis";
+                    secondary = respiratoryAcidosis;
                 } else if (PaCO2 < (expectedPaCO2 - 2)) {
-                    secondary = "Respiratory alkalosis (part compensating)";
+                    secondary = respiratoryAlkalosis;
                 } else {
                     secondary = "None";
                 }
@@ -116,22 +122,22 @@ $(document).ready(function(){
             //acidaemia disorder pathway
             if (PaCO2 > 45 && HCO3 < 22) {
                 if (PaCO2Change > HCO3Change){
-                    primary = "Respiratory acidosis";
+                    primary = respiratoryAcidosis;
                     respiratoryAcidosisOnset();
                     respiratoryAcidosisCompensation(onset);
                 } else if (PaCO2Change < HCO3Change){
-                    primary = "Metabolic acidosis";
+                    primary = metabolicAcidosis;
                     metabolicAcidosisCompensation();
                 } else {
                     primary = "Equal respiratory and metabolic acidosis";
                     secondary = "None";
                 }
             } else if (PaCO2 > 45 && HCO3 >= 22) {
-                primary = "Respiratory acidosis";
+                primary = respiratoryAcidosis;
                 respiratoryAcidosisOnset();
                 respiratoryAcidosisCompensation(onset);
             } else if (PaCO2 <= 45 && HCO3 < 22) {
-                primary = "Metabolic acidosis";
+                primary = metabolicAcidosis;
                 metabolicAcidosisCompensation();
             } else {
                 error();
@@ -162,9 +168,9 @@ $(document).ready(function(){
                     var expectedHCO3Low = Math.round(7 * PaCO2Change / 10);
                     alert("Expected chronic HCO3: " + expectedHCO3);
                     if (HCO3 > expectedHCO3High) {
-                        secondary = "Metabolic alkalosis";
+                        secondary = metabolicAlkalosis;
                     } else if (HCO3 < expectedHCO3Low) {
-                        secondary = "Metabolic acidosis (part compensating)";
+                        secondary = metabolicAcidosis;
                     } else {
                         secondary = "None";
                     }
@@ -172,9 +178,9 @@ $(document).ready(function(){
                     var expectedHCO3 = 24 - 2 * PaCO2Change / 10;
                     alert("Expected acute HCO3: " + expectedHCO3);
                     if (HCO3 > expectedHCO3) {
-                        secondary = "Metabolic alkalosis";
+                        secondary = metabolicAlkalosis;
                     } else if (HCO3 < expectedHCO3) {
-                        secondary = "Metabolic acidosis (part compensating)";
+                        secondary = metabolicAcidosis;
                     } else {
                         secondary = "None";
                     }
@@ -185,9 +191,9 @@ $(document).ready(function(){
             function metabolicAlkalosisCompensation () {
                 var expectedPaCO2 = Math.round(40 + 0.6 * HCO3Change);
                 if (PaCO2 > expectedPaCO2) {
-                    secondary = "Respiratory acidosis (part compensating)";
+                    secondary = respiratoryAcidosis;
                 } else if (PaCO2 < expectedPaCO2) {
-                    secondary = "Respiratory alkalosis";
+                    secondary = respiratoryAlkalosis;
                 } else {
                     secondary = "None";
                 }
@@ -196,21 +202,21 @@ $(document).ready(function(){
             //alkalaemia disorder pathway
             if (PaCO2 < 35 && HCO3 > 26) {
                 if (PaCO2Change > HCO3Change){
-                    var primary = "Respiratory alkalosis";
+                    var primary = respiratoryAlkalosis;
                     respiratoryAlkalosisOnset();
                     respiratoryAlkalosisCompensation(onset);
                 } else if (PaCO2Change < HCO3Change) {
-                    var primary = "Metabolic alkalosis";
+                    var primary = metabolicAlkalosis;
                     metabolicAlkalosisCompensation();
                 } else {
                     var primary = "Equal respiratory and metabolic alkalosis";
                 }
             } else if (PaCO2 < 35 && HCO3 <= 26) {
-                var primary = "Respiratory alkalosis";
+                var primary = respiratoryAlkalosis;
                 respiratoryAlkalosisOnset();
                 respiratoryAlkalosisCompensation(onset);
             } else if (PaCO2 >= 35 && HCO3 > 26) {
-                var primary = "Metabolic alkalosis";
+                var primary = metabolicAlkalosis;
                 metabolicAlkalosisCompensation();
             } else {
                 error();
@@ -223,50 +229,101 @@ $(document).ready(function(){
                 var PaCO2Change = (PaCO2 - 40 )/ 40;
                 var HCO3Change = (HCO3 - 24)/24;
                 if (PaCO2Change > HCO3Change){
-                    var primary = "Respiratory acidosis";
+                    primary = respiratoryAcidosis;
                     secondary = "Metabolic alkalosis (fully compensating)";
                 } else if (PaCO2Change < HCO3Change) {
-                    var primary = "Metabolic alkalosis";
+                    primary = metabolicAlkalosis;
                     secondary = "Respiratory acidosis (fully compensating)";
                 } else {
-                    var primary = "Equal respiratory acidosis and metabolic alkalosis";
+                    primary = "Equal respiratory acidosis and metabolic alkalosis";
                     secondary = "None";
                 }
             } else if (PaCO2 < 35 || HCO3 < 22) {
                 var PaCO2Change = (40 - PaCO2)/ 40;
                 var HCO3Change = (24 - HCO3)/24;
                 if (PaCO2Change > HCO3Change){
-                    var primary = "Respiratory alkalosis"
+                    primary = respiratoryAlkalosis;
                     secondary = "Metabolic acidosis (fully compensating)";
                 } else  if (PaCO2Change < HCO3Change) {
-                    var primary = "Metabolic acidosis";
+                    primary = metabolicAcidosis;
                     secondary = "Respiratory alkalosis (fully compensating)";
                 } else {
-                    var primary = "Equal respiratory alkalosis and metabolic acidosis";
+                    primary = "Equal respiratory alkalosis and metabolic acidosis";
                     secondary = "None";
                 }
             } else {
-                var primary = "There is no acid-base disturbance";
+                primary = "There is no acid-base disturbance";
                 secondary = "None";
             }
             alert("Primary: " + primary + " " + typeof primary);
             alert("Secondary: " + secondary + " " + typeof secondary);
+            alert(primary !== "There is no acid-base disturbance");
         }
         //We log result to console
-        $(".acidbase").append("<p>Primary: " + primary + "</p>");
-        $(".acidbase").append("<p>Secondary: " + secondary + "</p>");
+        $(".acidbase").append("<p><strong>Primary:</strong> " + primary + "</p>");
+        $(".acidbase").append("<p><strong>Secondary:</strong> " + secondary + "</p>");
         if (onset != 0) {
-            $(".acidbase").append("<p>Onset: " + onset + "</p>")
+            $(".acidbase").append("<p><strong>Onset:</strong> " + onset + "</p>")
         }
+        if (primary != "There is no acid-base disturbance" && primary != "Unable to ascertain a primary disorder.") {
+            $(".acidbase").append("<div class='row' id='suggestions'><div class='col-xs-6'><a class='aetiologies suggested' href='#suggestions'>Get Suggested Aetiologies</a></div><div class='col-xs-6'><button id='reanalyse'>Analyse another ABG</button></div></div>");
+            $('#results > #reanalyse').hide();
+        }
+        $('.aetiologies').click(function(){
+            if ($('.aetiologies').hasClass('suggested')) {
+                $('.suggested').addClass('closeSuggested').removeClass('suggested').text("Close Suggested Aetiologies");
+                if ((primary === respiratoryAcidosis && secondary  === metabolicAcidosis) || (primary === metabolicAcidosis && secondary  === respiratoryAcidosis) || (primary === "Equal respiratory and metabolic acidosis")) {
+                    $('#results').append($('#respacidosis-metacidosis').html());
+                }
+                if ((primary === respiratoryAlkalosis && secondary  === metabolicAlkalosis) || (primary === metabolicAlkalosis && secondary  === respiratoryAlkalosis) || (primary === "Equal respiratory and metabolic alkalosis")) {
+                    $('#results').append($('#respalkalosis-metalkalosis').html());
+                }
+                if ((primary === respiratoryAcidosis && secondary  === "Metabolic alkalosis (fully compensating)") || (primary === metabolicAlkalosis && secondary  === "Respiratory acidosis (fully compensating)") || (primary === "Equal respiratory acidosis and metabolic alkalosis")) {
+                    $('#results').append($('#respacidosis-metalkalosis').html());
+                }
+                if ((primary === respiratoryAlkalosis && secondary  === "Metabolic acidosis (fully compensating)") || (primary === metabolicAcidosis && secondary  === "Respiratory alkalosis (fully compensating)") || (primary === "Equal respiratory alkalosis and metabolic acidosis")) {
+                    $('#results').append($('#respalkalosis-metacidosis').html());
+                }
+                if (primary === respiratoryAcidosis) {
+                    $('#results').append($('#respiratory-acidosis').html());
+                }
+                if (primary === respiratoryAlkalosis) {
+                    $('#results').append($('#respiratory-alkalosis').html());
+                }
+                if (primary === metabolicAcidosis) {
+                    $('#results').append($('#metabolic-acidosis').html());
+                }
+                if (primary === metabolicAlkalosis) {
+                    $('#results').append($('#metabolic-alkalosis').html());
+                }
+                if (secondary === respiratoryAcidosis) {
+                    $('#results').append($('#respiratory-acidosis').html());
+                }
+                if (secondary === respiratoryAlkalosis) {
+                    $('#results').append($('#respiratory-alkalosis').html());
+                }
+                if (secondary === metabolicAcidosis) {
+                    $('#results').append($('#metabolic-acidosis').html());
+                }
+                if (secondary === metabolicAlkalosis) {
+                    $('#results').append($('#metabolic-alkalosis').html());
+                }
+            } else {
+                $('.closeSuggested').addClass('suggested');
+                $('.closeSuggested').text("Get Suggested Aetiologies");
+                $('.closeSuggested').removeClass('closeSuggested');
+                $('#results .panel').remove();
+            }
+        });
         $("form").fadeOut("600");
         $("#results").delay("600").slideDown("600");
         $('#reanalyse').click(function(){
-            $(".acidbase p").remove()
-            $(".validity").empty();
-            $("table").remove();
+            $(".acidbase p, .acidbase button, #results .panel, table").remove()
+            $('#suggestions').remove();
+            $(".validity").empty().removeClass('alert alert-danger');
             $("#results").css('display', 'none');
             $('input[type=number]').val(0);
-            $('#units').show();
+            $('#units, #results > #reanalyse').show();
             $("form").show();
         });
     });

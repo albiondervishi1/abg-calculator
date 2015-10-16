@@ -10,11 +10,6 @@ p, button, input[type=submit], td, .badge {
 	font-size: 18px;
 }
 
-h1 {
-	display: inline-block;
-
-}
-
 #units {
 	text-align: right;
 }
@@ -60,23 +55,40 @@ td {
 	border: 1px solid #34B3A0;
 }
 
-#results {
+#results, .disorders, .abdisorders {
 	display: none;
 }
 
-#reanalyse, input[type=submit] {
-	width: 200px;
+#reanalyse, input[type=submit], .aetiologies {
 	border: none;
-	padding: 10px;
+	border-radius: 2px;
+	padding: 10px 20px;
 	display: block;
-	margin: auto;
+	color: white;
 	background-color: #34B3A0;
+	margin: 20px auto;
+	font-size: 18px;
+}
+
+.aetiologies {
+	text-align: center;
+	max-width: 280px;
+}
+
+.aetiologies, .aetiologies:link {
+	text-decoration: none;
+	color: white;
+}
+
+#reanalyse:hover, input[type=submit]:hover, .aetiologies:hover {
+	color: #34B3A0;
+	background-color: white;
+}
+
+.acidbase a:hover {
+	text-decoration: none;
 }
 
 footer {
 	padding-top: 40px;
-}
-
-.form-inline * {
-	display: inline-block;
 }
