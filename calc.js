@@ -11,7 +11,6 @@ $(document).ready(function(){
         $('.SI').show();
         $('form[name=abgcalc]').data("conversion", 0.133322368);
         $('#PaCO2, #PaO2').attr("step", 0.01);
-        alert($('form[name=abgcalc]').data("conversion"));
         units = "kPa";
     });
     $('.US-toggle').click(function(){
@@ -23,13 +22,11 @@ $(document).ready(function(){
         $('.US').show();
         $('form[name=abgcalc]').data("conversion", 1);
         $('#PaCO2, #PaO2').attr("step", 0.1);
-        alert($('form[name=abgcalc]').data("conversion"));
         units = "mmHg";
     });
     $('form[name=abgcalc]').submit(function(event){
         event.preventDefault();
         $('#units').hide();
-        alert("Conversion rate: " + $('form[name=abgcalc]').data("conversion"));
         var pH = parseFloat($('input[name=pH]').val());
         var PaO2 = parseFloat((($('input[name=PaO2]').val()) / $('form[name=abgcalc]').data("conversion")).toFixed(1));
         var PaCO2 = parseFloat((($('input[name=PaCO2]').val()) / $('form[name=abgcalc]').data("conversion")).toFixed(1));
@@ -45,7 +42,7 @@ $(document).ready(function(){
         alert("calculated H: " + calculatedH + " " + typeof calculatedH);
         var calculatedpH = parseFloat(((-Math.log10(calculatedH / 1000000000)).toFixed(2)));
         alert("calculatedpH: " + calculatedpH + typeof calculatedpH);
-        alert ("Is pH same as calculatedpH?: " + (pH === calculatedpH));
+        alert("Is pH same as calculatedpH?: " + (pH === calculatedpH));
         if (pH !== calculatedpH) {
             $('.validity').addClass('alert alert-danger');
             $('.validity').html("<strong>Caution: </strong>Calculated pH is " + calculatedpH + " using a modified Henderson-Hasselbach equation. If this differs significantly from the ABG pH then your ABG might be invalid.");
@@ -66,9 +63,9 @@ $(document).ready(function(){
         //acidaemia pathway
         if (pH < 7.35) {
             var PaCO2Change = (PaCO2 - 40 )/ 40;
-            alert("PaCO2Change " + PaCO2Change + " " + typeof PaCO2Change);
+            alert("PaCO2Change: " + PaCO2Change + " " + typeof PaCO2Change);
             var HCO3Change = (24 - HCO3)/24;
-            alert("HCO3Change " + HCO3Change + " " + typeof HCO3Change);
+            alert("HCO3Change: " + HCO3Change + " " + typeof HCO3Change);
             //respiratory acidosis onset function
             function respiratoryAcidosisOnset () {
                 var onsetRatio = ((calculatedH - 40)/40)/(PaCO2Change);
