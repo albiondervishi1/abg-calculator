@@ -6,7 +6,11 @@
     var noDisorder = "None";
 
 //initial variables
-var conversion = 1;
+var conversionFactor = 1;
+var primary = "";
+var secondary = "";
+var onset = "";
+var error_present = false;
 
 //Toggle between US and SI units
 function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClass,conversionRate,stepDecimal,unitSuffix) {
@@ -19,7 +23,7 @@ function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClas
     $('form[name=abgcalc]').data("conversion", conversionRate);
     $('#PaCO2, #PaO2').attr("step", stepDecimal);
     units = unitSuffix;
-    conversion = conversionRate;
+    conversionFactor = conversionRate;
 };
 
 //Get initial values on form submission
@@ -27,7 +31,7 @@ function getInitialValues(analyte,requiresConversion) {
     inputField = "input[name=" + analyte + "]";
     analyteValue = parseFloat($(inputField).val());
     if (requiresConversion) {
-        analyteValue /= conversion.toFixed(1);
+        analyteValue /= conversionFactor.toFixed(1);
     }
     return analyteValue;
 };
@@ -116,6 +120,12 @@ function metabolicAlkalosisCompensation(HCO3Change,PaCO2) {
     }
 };
 
+//ABG values lead to error
+function error() {
+    error_present = true;
+    return "Unable to ascertain a primary disorder. Please reconsider the validity of your sample.";
+};
+
 $(document).ready(function(){
     $('input[type=number]').val("");
     $('#pH').focus();
@@ -132,19 +142,24 @@ $(document).ready(function(){
     $('form[name=abgcalc]').submit(function(event){
         event.preventDefault();
         $('#units').hide();
+
+        //setting analyte values
         var pH = getInitialValues("pH",false);
         var PaO2 = getInitialValues("PaO2",true);
         var PaCO2 = getInitialValues("PaCO2",true);
         var HCO3 = getInitialValues("HCO3",false);
-        alert("pH: " + pH + " " + typeof pH);
-        alert("PaO2: " + PaO2 + " " + typeof PaO2);
-        alert("PaCO2: " + PaCO2 + " " + typeof PaCO2);
-        alert("HCO3: " + HCO3 + " " + typeof HCO3);
+
+        //calculating analyte percentage changes
+        var PaCO2Change = Math.abs(PaCO2 - 40);
+        var HCO3Change = Math.abs(24 - HCO3);
+        var PaCO2PercentageChange = PaCO2Change / 40;
+        var HCO3PercentageChange = HCO3Change / 24;
 
         //tabulating user's inputs
         $('.submitted-values').append("<div class='table-responsive'><table class='table'><tr><td>pH <span class='badge'>" + pH + "</span></td><td>P<sub>a</sub>O<sub>2</sub> <span class='badge'>" + Math.round(PaO2 * $('form[name=abgcalc]').data("conversion"))  + units + "</span></td><td>P<sub>a</sub>CO<sub>2</sub> <span class='badge'>" + Math.round(PaCO2 * $('form[name=abgcalc]').data("conversion")) + units + "</span></td><td>HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + "mmEq/L</span></td></tr></table></div>")
+        
         //checking validity of sample
-        var calculatedH = (24 * PaCO2)/HCO3;
+        var calculatedH = (24 * PaCO2) / HCO3;
         alert("calculated H: " + calculatedH + " " + typeof calculatedH);
         var calculatedpH = parseFloat(((-Math.log10(calculatedH / 1000000000)).toFixed(2)));
         alert("calculatedpH: " + calculatedpH + typeof calculatedpH);
@@ -153,20 +168,6 @@ $(document).ready(function(){
             $('.validity').addClass('alert alert-danger');
             $('.validity').html("<strong>Caution: </strong>Calculated pH is " + calculatedpH + " using a modified Henderson-Hasselbach equation. If this differs significantly from the ABG pH then your ABG might be invalid.");
         }
-        //declaring variables for global scope
-        var secondary = 0;
-        var primary = 0;
-        var onset = 0;
-        function error () {
-                primary = "Unable to ascertain a primary disorder. Please reconsider the validity of your sample.";
-                secondary = "Unable to ascertain if secondary disorder present. Please reconsider the validity of your sample.";
-        };
-
-        //calculating analyte percentage changes
-        var PaCO2Change = Math.abs(PaCO2 - 40);
-        var HCO3Change = Math.abs(24 - HCO3);
-        var PaCO2PercentageChange = PaCO2Change / 40;
-        var HCO3PercentageChange = HCO3Change / 24;
 
         //acidaemia pathway
         if (pH < 7.35) {
@@ -178,7 +179,7 @@ $(document).ready(function(){
                     primary = metabolicAcidosis;
                     secondary = metabolicAcidosisCompensation(HCO3,PaCO2);
                 } else if (PaCO2 <= 45 && HCO3 >= 22) {
-                    error();
+                    primary = error();
                 } else {
                     primary = "Equal respiratory and metabolic acidosis";
                     secondary = noDisorder;
@@ -195,7 +196,7 @@ $(document).ready(function(){
                     var primary = metabolicAlkalosis;
                     secondary = metabolicAlkalosisCompensation(HCO3Change,PaCO2);
                 } else if (PaCO2 >= 35 && HCO3 <= 26) {
-                    error();
+                    primary = error();
                 } else {
                     var primary = "Equal respiratory and metabolic alkalosis";
                 }
@@ -212,7 +213,7 @@ $(document).ready(function(){
                     secondary = "Respiratory acidosis (fully compensating)";
                 } else {
                     primary = "Equal respiratory acidosis and metabolic alkalosis";
-                    secondary = "None";
+                    secondary = noDisorder;
                 }
             } else if (PaCO2 < 35 || HCO3 < 22) {
                 if (PaCO2PercentageChange > HCO3PercentageChange){
@@ -223,11 +224,11 @@ $(document).ready(function(){
                     secondary = "Respiratory alkalosis (fully compensating)";
                 } else {
                     primary = "Equal respiratory alkalosis and metabolic acidosis";
-                    secondary = "None";
+                    secondary = noDisorder;
                 }
             } else {
                 primary = "There is no acid-base disturbance";
-                secondary = "None";
+                secondary = noDisorder;
             }
             alert("Primary: " + primary + " " + typeof primary);
             alert("Secondary: " + secondary + " " + typeof secondary);
@@ -236,7 +237,7 @@ $(document).ready(function(){
         //We log acid-base result to console
         $(".acidbase").append("<p><strong>Primary:</strong> " + primary + "</p>");
         $(".acidbase").append("<p><strong>Secondary:</strong> " + secondary + "</p>");
-        if (onset != 0) {
+        if (onset != "") {
             $(".acidbase").append("<p><strong>Onset:</strong> " + onset + "</p>")
         }
         if (primary != "There is no acid-base disturbance" && primary != "Unable to ascertain a primary disorder.") {
