@@ -30,9 +30,9 @@ function respiratoryOnset(calculatedH,PaCO2PercentageChange) {
 };
 
 //Respiratory acidosis compensation calculation
-function respiratoryAcidosisCompensation(onset,PaCO2PercentageChange,HCO3) {
+function respiratoryAcidosisCompensation(onset,PaCO2Change,HCO3) {
     if (onset === "Chronic") {
-        var expectedHCO3 = Math.round(3.5 * PaCO2PercentageChange / 10 + 24);
+        var expectedHCO3 = Math.round(3.5 * PaCO2Change / 10 + 24);
         if (HCO3 > expectedHCO3) {
             return metabolicAlkalosis;
         } else if (HCO3 < expectedHCO3) {
@@ -41,7 +41,7 @@ function respiratoryAcidosisCompensation(onset,PaCO2PercentageChange,HCO3) {
             return noDisorder;
         }
     } else {
-        var expectedHCO3 = Math.round(PaCO2PercentageChange / 10 + 24);
+        var expectedHCO3 = Math.round(PaCO2Change / 10 + 24);
         if (HCO3 > expectedHCO3 + 3) {
             return metabolicAlkalosis;
         } else if (HCO3 < expectedHCO3 - 3) {
@@ -134,15 +134,17 @@ $(document).ready(function(){
         };
 
         //calculating analyte percentage changes
-        var PaCO2PercentageChange = Math.abs((PaCO2 - 40 )) / 40;
-        var HCO3PercentageChange = Math.abs((24 - HCO3)) / 24;
+        var PaCO2Change = Math.abs(PaCO2 - 40);
+        var HCO3Change = Math.abs(24 - HCO3);
+        var PaCO2PercentageChange = PaCO2Change / 40;
+        var HCO3PercentageChange = HCO3Change / 24;
 
         //acidaemia pathway
         if (pH < 7.35) {
             //checking for respiratory acidosis onset
             onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
             //checking respiratory acidosis compensation
-            secondary = respiratoryAcidosisCompensation(onset,PaCO2PercentageChange,HCO3);
+            secondary = respiratoryAcidosisCompensation(onset,PaCO2Change,HCO3);
             alert("Secondary: " + secondary + " " + typeof secondary);
             // checking metabolic acidosis compensation
             secondary = metabolicAcidosisCompensation(HCO3,PaCO2);
@@ -152,7 +154,7 @@ $(document).ready(function(){
                 if (PaCO2PercentageChange > HCO3PercentageChange){
                     primary = respiratoryAcidosis;
                     onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
-                    secondary = respiratoryAcidosisCompensation(onset,PaCO2PercentageChange,HCO3);
+                    secondary = respiratoryAcidosisCompensation(onset,PaCO2Change,HCO3);
                     alert("Secondary: " + secondary + " " + typeof secondary);
                 } else if (PaCO2PercentageChange < HCO3PercentageChange){
                     primary = metabolicAcidosis;
@@ -165,7 +167,7 @@ $(document).ready(function(){
             } else if (PaCO2 > 45 && HCO3 >= 22) {
                 primary = respiratoryAcidosis;
                 onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
-                secondary = respiratoryAcidosisCompensation(onset,PaCO2PercentageChange,HCO3);
+                secondary = respiratoryAcidosisCompensation(onset,PaCO2Change,HCO3);
                 alert("Secondary: " + secondary + " " + typeof secondary);
             } else if (PaCO2 <= 45 && HCO3 < 22) {
                 primary = metabolicAcidosis;
