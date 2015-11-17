@@ -1,29 +1,28 @@
+function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClass,conversionRate,stepDecimal,unitSuffix) {
+    $(otherUnitToggle).removeClass('active');
+    $(thisUnitToggle).css("background-color","#247D70");
+    $(otherUnitToggle).css("background-color", "#34B3A0");
+    $(thisUnitToggle).addClass('active');
+    $(otherUnitClass).hide();
+    $(thisUnitClass).show();
+    $('form[name=abgcalc]').data("conversion", conversionRate);
+    alert(conversionRate);
+    $('#PaCO2, #PaO2').attr("step", stepDecimal);
+    var units = unitSuffix;
+}
+
 $(document).ready(function(){
-    $('.SI').hide();
     $('input[type=number]').val(0);
+
+    $('.SI').hide();
     var units = "mmHg";
     $('.SI-toggle').click(function(){
-        $('.US-toggle').removeClass('active');
-        $('.SI-toggle').css("background-color","#247D70");
-        $('.US-toggle').css("background-color", "#34B3A0");
-        $(this).addClass('active');
-        $('.US').hide();
-        $('.SI').show();
-        $('form[name=abgcalc]').data("conversion", 0.133322368);
-        $('#PaCO2, #PaO2').attr("step", 0.01);
-        units = "kPa";
+        unitToggle(".SI-toggle",".US-toggle",'.SI','.US',0.133322368,0.01,"kPa");
     });
     $('.US-toggle').click(function(){
-        $('.SI-toggle').removeClass('active');
-        $(this).addClass('active');
-        $('.US-toggle').css("background-color","#247D70");
-        $('.SI-toggle').css("background-color", "#34B3A0");
-        $('.SI').hide();
-        $('.US').show();
-        $('form[name=abgcalc]').data("conversion", 1);
-        $('#PaCO2, #PaO2').attr("step", 0.1);
-        units = "mmHg";
+        unitToggle(".US-toggle",".SI-toggle",'.US','.SI',1,0.1,"mmHg");
     });
+
     $('form[name=abgcalc]').submit(function(event){
         event.preventDefault();
         $('#units').hide();
