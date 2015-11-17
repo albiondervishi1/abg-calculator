@@ -5,6 +5,9 @@
     var metabolicAlkalosis = "Metabolic alkalosis";
     var noDisorder = "None";
 
+//initial variables
+var conversion = 1;
+
 //Toggle between US and SI units
 function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClass,conversionRate,stepDecimal,unitSuffix) {
     $(thisUnitToggle).addClass('active');
@@ -16,7 +19,19 @@ function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClas
     $('form[name=abgcalc]').data("conversion", conversionRate);
     $('#PaCO2, #PaO2').attr("step", stepDecimal);
     units = unitSuffix;
-}
+    conversion = conversionRate;
+};
+
+//Get initial values on form submission
+function getInitialValues(analyte,requiresConversion) {
+    inputField = "input[name=" + analyte + "]";
+    analyteValue = parseFloat($(inputField).val());
+    if (requiresConversion) {
+        analyteValue /= conversion.toFixed(1);
+    }
+    return analyteValue;
+};
+
 //Respiratory disorder onset
 function respiratoryOnset(calculatedH,PaCO2PercentageChange) {
     var onsetRatio = (Math.abs((40 - calculatedH)/40))/(PaCO2PercentageChange);
@@ -102,7 +117,6 @@ function metabolicAlkalosisCompensation(HCO3Change,PaCO2) {
 };
 
 $(document).ready(function(){
-    
     $('input[type=number]').val("");
     $('#pH').focus();
 
@@ -118,14 +132,15 @@ $(document).ready(function(){
     $('form[name=abgcalc]').submit(function(event){
         event.preventDefault();
         $('#units').hide();
-        var pH = parseFloat($('input[name=pH]').val());
-        var PaO2 = parseFloat((($('input[name=PaO2]').val()) / $('form[name=abgcalc]').data("conversion")).toFixed(1));
-        var PaCO2 = parseFloat((($('input[name=PaCO2]').val()) / $('form[name=abgcalc]').data("conversion")).toFixed(1));
-        var HCO3 = parseFloat($('input[name=HCO3]').val());
+        var pH = getInitialValues("pH",false);
+        var PaO2 = getInitialValues("PaO2",true);
+        var PaCO2 = getInitialValues("PaCO2",true);
+        var HCO3 = getInitialValues("HCO3",false);
         alert("pH: " + pH + " " + typeof pH);
         alert("PaO2: " + PaO2 + " " + typeof PaO2);
         alert("PaCO2: " + PaCO2 + " " + typeof PaCO2);
         alert("HCO3: " + HCO3 + " " + typeof HCO3);
+
         //tabulating user's inputs
         $('.submitted-values').append("<div class='table-responsive'><table class='table'><tr><td>pH <span class='badge'>" + pH + "</span></td><td>P<sub>a</sub>O<sub>2</sub> <span class='badge'>" + Math.round(PaO2 * $('form[name=abgcalc]').data("conversion"))  + units + "</span></td><td>P<sub>a</sub>CO<sub>2</sub> <span class='badge'>" + Math.round(PaCO2 * $('form[name=abgcalc]').data("conversion")) + units + "</span></td><td>HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + "mmEq/L</span></td></tr></table></div>")
         //checking validity of sample
@@ -159,7 +174,7 @@ $(document).ready(function(){
                     primary = respiratoryAcidosis;
                     onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
                     secondary = respiratoryAcidosisCompensation(onset,PaCO2Change,HCO3);
-                } else if (HCO3 < 22 && (PaCO2 <= 45 || (PaCO2PercentageChange < HCO3PercentageChange)) {
+                } else if (HCO3 < 22 && (PaCO2 <= 45 || PaCO2PercentageChange < HCO3PercentageChange)) {
                     primary = metabolicAcidosis;
                     secondary = metabolicAcidosisCompensation(HCO3,PaCO2);
                 } else if (PaCO2 <= 45 && HCO3 >= 22) {
