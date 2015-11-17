@@ -155,41 +155,18 @@ $(document).ready(function(){
 
         //acidaemia pathway
         if (pH < 7.35) {
-            //checking for respiratory acidosis onset
-            onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
-            //checking respiratory acidosis compensation
-            secondary = respiratoryAcidosisCompensation(onset,PaCO2Change,HCO3);
-            alert("Secondary: " + secondary + " " + typeof secondary);
-            // checking metabolic acidosis compensation
-            secondary = metabolicAcidosisCompensation(HCO3,PaCO2);
-            alert("Secondary: " + secondary + " " + typeof secondary);
             //acidaemia disorder pathway
-            if (PaCO2 > 45 && HCO3 < 22) {
-                if (PaCO2PercentageChange > HCO3PercentageChange){
+                if (PaCO2 > 45 && (HCO3 >= 22 || PaCO2PercentageChange > HCO3PercentageChange) ) {
                     primary = respiratoryAcidosis;
                     onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
                     secondary = respiratoryAcidosisCompensation(onset,PaCO2Change,HCO3);
-                    alert("Secondary: " + secondary + " " + typeof secondary);
-                } else if (PaCO2PercentageChange < HCO3PercentageChange){
+                } else if ( HCO3 < 22 && (PaCO2 <= 45 || (PaCO2PercentageChange < HCO3PercentageChange) ) {
                     primary = metabolicAcidosis;
                     secondary = metabolicAcidosisCompensation(HCO3,PaCO2);
-                    alert("Secondary: " + secondary + " " + typeof secondary);
                 } else {
                     primary = "Equal respiratory and metabolic acidosis";
-                    secondary = "None";
+                    secondary = noDisorder;
                 }
-            } else if (PaCO2 > 45 && HCO3 >= 22) {
-                primary = respiratoryAcidosis;
-                onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
-                secondary = respiratoryAcidosisCompensation(onset,PaCO2Change,HCO3);
-                alert("Secondary: " + secondary + " " + typeof secondary);
-            } else if (PaCO2 <= 45 && HCO3 < 22) {
-                primary = metabolicAcidosis;
-                secondary = metabolicAcidosisCompensation(HCO3,PaCO2);
-                alert("Secondary: " + secondary + " " + typeof secondary);
-            } else {
-                error();
-            }
             alert("Primary:" + primary + " " + typeof primary);
             alert("Secondary: " + secondary + " " + typeof secondary);
         //alkalaemia pathway
