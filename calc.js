@@ -33,6 +33,7 @@ function getInitialValues(analyte,requiresConversion) {
     if (requiresConversion) {
         analyteValue /= conversionFactor.toFixed(1);
     }
+
     return analyteValue;
 };
 
@@ -156,7 +157,22 @@ $(document).ready(function(){
         var HCO3PercentageChange = HCO3Change / 24;
 
         //tabulating user's inputs
-        $('.submitted-values').append("<div class='table-responsive'><table class='table'><tr><td>pH <span class='badge'>" + pH + "</span></td><td>P<sub>a</sub>O<sub>2</sub> <span class='badge'>" + Math.round(PaO2 * $('form[name=abgcalc]').data("conversion"))  + units + "</span></td><td>P<sub>a</sub>CO<sub>2</sub> <span class='badge'>" + Math.round(PaCO2 * $('form[name=abgcalc]').data("conversion")) + units + "</span></td><td>HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + "mmEq/L</span></td></tr></table></div>")
+        $('.submitted-values').append("<div class='container values-row'>\
+                                            <div class='row'>\
+                                                <div class='col-xs-6 col-sm-3'>\
+                                                    pH <span class='badge'> " + pH + " </span>\
+                                                </div>\
+                                                <div class='col-xs-6 col-sm-3'>\
+                                                    P<sub>a</sub>O<sub>2</sub> <span class='badge'>" + Math.round(PaO2 * conversionFactor)  + units + "</span>\
+                                                </div>\
+                                                <div class='col-xs-6 col-sm-3'>\
+                                                    P<sub>a</sub>CO<sub>2</sub> <span class='badge'>" + Math.round(PaCO2 * conversionFactor) + units + "</span>\
+                                                </div>\
+                                                <div class='col-xs-6 col-sm-3'>\
+                                                    HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + "mmEq/L</span>\
+                                                </div>\
+                                            </div>\
+                                        </div>");
         
         //checking validity of sample
         var calculatedH = (24 * PaCO2) / HCO3;
@@ -340,7 +356,7 @@ $(document).ready(function(){
         $("form[name=abgcalc]").fadeOut("600");
         $("#results").delay("600").slideDown("600");
         $('#reanalyse').click(function(){
-            $(".acidbase p, .acidbase button, #results .panel, table").remove()
+            $(".acidbase p, .acidbase button, #results .panel, .values-row").remove()
             $('#suggestions').remove();
             $(".validity").empty().removeClass('alert alert-danger');
             $("#results").css('display', 'none');

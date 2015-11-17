@@ -20,11 +20,11 @@ body {
 	color: white !important;
 }
 
-h1, h2, label, p, button, input[type=submit], #units, td {
+h1, h2, label, p, button, input[type=submit], #units, .col-sm-3 {
 	color: white;
 }
 
-p, button, input[type=submit], td, .badge {
+p, button, input[type=submit], .col-sm-3, .badge {
 	font-size: 18px;
 }
 
@@ -72,9 +72,15 @@ form, #units {
 	text-align: center;
 }
 
-td {
+.submitted-values {
+	margin-bottom: 10px;
+	border-bottom: 3px solid #34B3A0;
+}
+
+.col-sm-3 {
 	text-align: center;
-	border: 1px solid #34B3A0;
+	vertical-align: middle;
+	padding: 10px 0px;
 }
 
 #results, .disorders, .abdisorders, #submitanion {
@@ -143,4 +149,10 @@ footer a {
 footer a:hover {
 	text-decoration: none;
 	color: #34B3A0;
+}
+
+@media screen and (max-width: 370px) {
+	.submitted-values > .container > .row > .col-xs-6 > span {
+		display: block !important;
+	}
 }
