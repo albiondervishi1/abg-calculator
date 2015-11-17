@@ -143,8 +143,8 @@ $(document).ready(function(){
         var primary = 0;
         var onset = 0;
         function error () {
-                primary = "Unable to ascertain a primary disorder.";
-                secondary = "Unable to ascertain if secondary disorder present.";
+                primary = "Unable to ascertain a primary disorder. Please reconsider the validity of your sample.";
+                secondary = "Unable to ascertain if secondary disorder present. Please reconsider the validity of your sample.";
         };
 
         //calculating analyte percentage changes
@@ -155,14 +155,15 @@ $(document).ready(function(){
 
         //acidaemia pathway
         if (pH < 7.35) {
-            //acidaemia disorder pathway
-                if (PaCO2 > 45 && (HCO3 >= 22 || PaCO2PercentageChange > HCO3PercentageChange) ) {
+                if (PaCO2 > 45 && (HCO3 >= 22 || PaCO2PercentageChange > HCO3PercentageChange)) {
                     primary = respiratoryAcidosis;
                     onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
                     secondary = respiratoryAcidosisCompensation(onset,PaCO2Change,HCO3);
-                } else if ( HCO3 < 22 && (PaCO2 <= 45 || (PaCO2PercentageChange < HCO3PercentageChange) ) {
+                } else if (HCO3 < 22 && (PaCO2 <= 45 || (PaCO2PercentageChange < HCO3PercentageChange)) {
                     primary = metabolicAcidosis;
                     secondary = metabolicAcidosisCompensation(HCO3,PaCO2);
+                } else if (PaCO2 <= 45 && HCO3 >= 22) {
+                    error();
                 } else {
                     primary = "Equal respiratory and metabolic acidosis";
                     secondary = noDisorder;
@@ -171,38 +172,18 @@ $(document).ready(function(){
             alert("Secondary: " + secondary + " " + typeof secondary);
         //alkalaemia pathway
         } else if (pH > 7.45) {
-            //checking for respiratory alkalosis onset
-            onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
-            //respiratory alkalosis compensation calculation
-            secondary = respiratoryAlkalosisCompensation(onset,PaCO2Change,HCO3);
-            alert("Secondary: " + secondary + " " + typeof secondary);
-            //checking metabolic alkalosis compensation
-            secondary = metabolicAlkalosisCompensation(HCO3Change,PaCO2);
-            alert("Secondary: " + secondary + " " + typeof secondary);
-            //alkalaemia disorder pathway
-            if (PaCO2 < 35 && HCO3 > 26) {
-                if (PaCO2PercentageChange > HCO3PercentageChange){
+                if (PaCO2 < 35 && (HCO3 <= 26 || PaCO2PercentageChange > HCO3PercentageChange)) {
                     var primary = respiratoryAlkalosis;
                     onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
                     secondary = respiratoryAlkalosisCompensation(onset,PaCO2Change,HCO3);
-                } else if (PaCO2PercentageChange < HCO3PercentageChange) {
+                } else if (HCO3 > 26 && (PaCO2 >= 35 || PaCO2PercentageChange < HCO3PercentageChange)) {
                     var primary = metabolicAlkalosis;
                     secondary = metabolicAlkalosisCompensation(HCO3Change,PaCO2);
-                    alert("Secondary: " + secondary + " " + typeof secondary);
+                } else if (PaCO2 >= 35 && HCO3 <= 26) {
+                    error();
                 } else {
                     var primary = "Equal respiratory and metabolic alkalosis";
                 }
-            } else if (PaCO2 < 35 && HCO3 <= 26) {
-                var primary = respiratoryAlkalosis;
-                onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
-                secondary = respiratoryAlkalosisCompensation(onset,PaCO2Change,HCO3);
-            } else if (PaCO2 >= 35 && HCO3 > 26) {
-                var primary = metabolicAlkalosis;
-                secondary = metabolicAlkalosisCompensation(HCO3Change,PaCO2);
-                alert("Secondary: " + secondary + " " + typeof secondary);
-            } else {
-                error();
-            }
             alert("Primary: " + primary + typeof primary);
             alert("Secondary: " + secondary + " " + typeof secondary);
         //normal pH pathway
