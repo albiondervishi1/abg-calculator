@@ -53,18 +53,20 @@ function respiratoryAcidosisCompensation(onset,PaCO2Change,HCO3) {
 };
 
 //Respiratory alkalosis compensation calculation
-function respiratoryAlkalosisCompensation(onset,PaCO2PercentageChange,HCO3) {
+function respiratoryAlkalosisCompensation(onset,PaCO2Change,HCO3) {
     if (onset === "Chronic") {
-        var expectedHCO3 =  Math.round(PaCO2PercentageChange / 10);
-        if (HCO3 > expectedHCO3 * 5) {
+        var expectedHCO3 =  Math.round(PaCO2Change / 10);
+        var expectedHCO3High = 24 - expectedHCO3 * 5;
+        var expectedHCO3Low = 24 - expectedHCO3 * 7;
+        if (HCO3 > expectedHCO3High) {
             return metabolicAlkalosis;
-        } else if (HCO3 < expectedHCO3 * 7) {
+        } else if (HCO3 < expectedHCO3Low) {
             return metabolicAcidosis;
         } else {
             return noDisorder;
         }
     } else {
-        var expectedHCO3 = 24 - 2 * PaCO2PercentageChange / 10;
+        var expectedHCO3 = Math.round(24 - 2 * PaCO2Change / 10);
         if (HCO3 > expectedHCO3) {
             return metabolicAlkalosis;
         } else if (HCO3 < expectedHCO3) {
