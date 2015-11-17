@@ -1,10 +1,10 @@
 function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClass,conversionRate,stepDecimal,unitSuffix) {
-    $(otherUnitToggle).removeClass('active');
-    $(thisUnitToggle).css("background-color","#247D70");
-    $(otherUnitToggle).css("background-color", "#34B3A0");
     $(thisUnitToggle).addClass('active');
-    $(otherUnitClass).hide();
+    $(thisUnitToggle).css("background-color","#247D70");
     $(thisUnitClass).show();
+    $(otherUnitClass).hide();
+    $(otherUnitToggle).removeClass('active');
+    $(otherUnitToggle).css("background-color", "#34B3A0");
     $('form[name=abgcalc]').data("conversion", conversionRate);
     alert(conversionRate);
     $('#PaCO2, #PaO2').attr("step", stepDecimal);
@@ -12,7 +12,8 @@ function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClas
 }
 
 $(document).ready(function(){
-    $('input[type=number]').val(0);
+    $('input[type=number]').val("");
+    $('#pH').focus();
 
     $('.SI').hide();
     var units = "mmHg";
@@ -365,9 +366,10 @@ $(document).ready(function(){
             $('#suggestions').remove();
             $(".validity").empty().removeClass('alert alert-danger');
             $("#results").css('display', 'none');
-            $('input[type=number]').val(0);
+            $('input[type=number]').val("");
             $('#units, #results > #reanalyse').show();
             $("form[name=abgcalc]").show();
+            $('#pH').focus();
         });
     });
 });
