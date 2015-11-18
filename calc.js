@@ -1,9 +1,22 @@
+function loadPreference () {
+	savedPreference = sessionStorage.getItem("arterialbloodgas.com");
+	unitPreference = JSON.parse(savedPreference);
+	if (unitPreference == [".SI-toggle"]) {
+		unitToggle(".SI-toggle",".US-toggle",'.SI','.US',0.133322368,0.01,"kPa");
+    }
+};
+
+function rememberPreference (unit) {
+	unitPreference = JSON.stringify(unit);
+	sessionStorage.setItem("arterialbloodgas.com",unitPreference);
+};
+
 //declaring disorders
-    var respiratoryAcidosis = "Respiratory acidosis";
-    var respiratoryAlkalosis = "Respiratory alkalosis";
-    var metabolicAcidosis = "Metabolic acidosis <button type='button' class='checkanion'>Check Anion Gap</button>";
-    var metabolicAlkalosis = "Metabolic alkalosis";
-    var noDisorder = "None";
+var respiratoryAcidosis = "Respiratory acidosis";
+var respiratoryAlkalosis = "Respiratory alkalosis";
+var metabolicAcidosis = "Metabolic acidosis <button type='button' class='checkanion'>Check Anion Gap</button>";
+var metabolicAlkalosis = "Metabolic alkalosis";
+var noDisorder = "None";
 
 //initial variables
 var conversionFactor = 1;
@@ -20,10 +33,10 @@ function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClas
     $(otherUnitClass).hide();
     $(otherUnitToggle).removeClass('active');
     $(otherUnitToggle).css("background-color", "#34B3A0");
-    $('form[name=abgcalc]').data("conversion", conversionRate);
     $('#PaCO2, #PaO2').attr("step", stepDecimal);
     units = unitSuffix;
     conversionFactor = conversionRate;
+    rememberPreference(thisUnitToggle);
 };
 
 //Get initial values on form submission
@@ -127,10 +140,11 @@ function error() {
 };
 
 $(document).ready(function(){
-    $('input[type=number]').val("");
+	$('input[type=number]').val("");
     $('#pH').focus();
 
     $('.SI').hide();
+    loadPreference();
     var units = "mmHg";
     $('.SI-toggle').click(function(){
         unitToggle(".SI-toggle",".US-toggle",'.SI','.US',0.133322368,0.01,"kPa");
