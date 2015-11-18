@@ -139,7 +139,28 @@ function error() {
     return "Unable to ascertain a primary disorder. Please reconsider the validity of your sample.";
 };
 
+function setAnionGapModalPosition() {
+	$('.aniongap-modal').css("top", ( $(window).height() - $('.aniongap-modal').height() ) * 0.3 );
+	width = setAnionGapModalWidth($(window).width());
+	$('.aniongap-modal').width(width);
+	$('.aniongap-modal').css("left", ( $(window).width() - width ) * 0.5  );
+};
+
+function setAnionGapModalWidth (window) {
+	if ( window < 620  ) {
+		width = window * 0.85;
+	} else {
+		width = 600;
+	}
+	return width;
+};
+
 $(document).ready(function(){
+	//we change size of anion gap modal if viewport size changes
+	$(window).resize(function() {
+		setAnionGapModalPosition();
+	});
+
 	$('input[type=number]').val("");
     $('#pH').focus();
 
@@ -284,7 +305,7 @@ $(document).ready(function(){
                 $('.checkanion').removeClass('toggled').text("Check Anion Gap");
                 $('#submitanion input[type=number]').val(0);
             } else {*/
-            	$('.aniongap-modal').css({'top': ($(window).height() - $('.aniongap-modal').height()) * 0.3,'left': ($(window).width() - $('.aniongap-modal').width()) * 0.5})
+            	setAnionGapModalPosition();
             	$('.aniongap-modal').slideDown();                
             // }
         });

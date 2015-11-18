@@ -118,7 +118,6 @@ form, #units {
 }
 
 .aniongap-modal {
-	width: 600px;
 	height: 300px;
 	position: fixed;
 	background-color: gray;
