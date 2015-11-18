@@ -27,14 +27,13 @@ function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClas
 };
 
 //Get initial values on form submission
-function getInitialValues(analyte,requiresConversion) {
+function getStandardisedValues(analyte,requiresConversion) {
     inputField = "input[name=" + analyte + "]";
     analyteValue = parseFloat($(inputField).val());
     if (requiresConversion) {
-        analyteValue /= conversionFactor.toFixed(1);
+        analyteValue /= conversionFactor;
     }
-
-    return analyteValue;
+    return analyteValue.toFixed(1);
 };
 
 //Respiratory disorder onset
@@ -145,10 +144,10 @@ $(document).ready(function(){
         $('#units').hide();
 
         //setting analyte values
-        var pH = getInitialValues("pH",false);
-        var PaO2 = getInitialValues("PaO2",true);
-        var PaCO2 = getInitialValues("PaCO2",true);
-        var HCO3 = getInitialValues("HCO3",false);
+        var pH = getStandardisedValues("pH",false);
+        var PaO2 = getStandardisedValues("PaO2",true);
+        var PaCO2 = getStandardisedValues("PaCO2",true);
+        var HCO3 = getStandardisedValues("HCO3",false);
 
         //calculating analyte percentage changes
         var PaCO2Change = Math.abs(PaCO2 - 40);
@@ -163,10 +162,10 @@ $(document).ready(function(){
                                                     pH <span class='badge'> " + pH + " </span>\
                                                 </div>\
                                                 <div class='col-xs-6 col-sm-3'>\
-                                                    P<sub>a</sub>O<sub>2</sub> <span class='badge'>" + Math.round(PaO2 * conversionFactor)  + units + "</span>\
+                                                    P<sub>a</sub>O<sub>2</sub> <span class='badge'>" + (PaO2 * conversionFactor).toFixed(1)  + units + "</span>\
                                                 </div>\
                                                 <div class='col-xs-6 col-sm-3'>\
-                                                    P<sub>a</sub>CO<sub>2</sub> <span class='badge'>" + Math.round(PaCO2 * conversionFactor) + units + "</span>\
+                                                    P<sub>a</sub>CO<sub>2</sub> <span class='badge'>" + (PaCO2 * conversionFactor).toFixed(1) + units + "</span>\
                                                 </div>\
                                                 <div class='col-xs-6 col-sm-3'>\
                                                     HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + "mmEq/L</span>\
