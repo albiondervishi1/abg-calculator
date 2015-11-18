@@ -263,13 +263,17 @@ $(document).ready(function(){
             alert("Secondary: " + secondary + " " + typeof secondary);
             alert(primary !== "There is no acid-base disturbance");
         }
-        //We log acid-base result to console
-        $(".acidbase").append("<p><strong>Primary:</strong> " + primary + "</p>");
-        $(".acidbase").append("<p><strong>Secondary:</strong> " + secondary + "</p>");
-        if (onset != "") {
-            $(".acidbase").append("<p><strong>Onset:</strong> " + onset + "</p>")
+        //We log acid-base result to page
+        if (secondary != noDisorder && error_present == false) {
+        	$(".acidbase").append("<p><strong>Primary:</strong> " + primary + "</p>");
+        	$(".acidbase").append("<p><strong>Secondary:</strong> " + secondary + "</p>");
+        } else {
+        	$(".acidbase").append("<p>" + primary + "</p>");
         }
-        if (primary != "There is no acid-base disturbance" && primary != "Unable to ascertain a primary disorder.") {
+        if (onset != "" && error_present == false && (primary == respiratoryAlkalosis || primary == respiratoryAcidosis)) {
+            $(".acidbase").append("<p><strong>Respiratory Onset:</strong> " + onset + "</p>")
+        }
+        if (primary != "There is no acid-base disturbance" && error_present == false) {
             $(".acidbase").append("<div class='row' id='suggestions'><div class='col-xs-6'><a class='aetiologies suggested' href='#suggestions'>Get Suggested Aetiologies</a></div><div class='col-xs-6'><button id='reanalyse'>Analyse another ABG</button></div></div>");
             $('#results > #reanalyse').hide();
         }
@@ -377,6 +381,7 @@ $(document).ready(function(){
             $('#units, #results > #reanalyse').show();
             $("form[name=abgcalc]").show();
             $('#pH').focus();
+            error_present = false;
         });
     });
 });
