@@ -138,14 +138,14 @@ function error() {
     error_present = true;
     return "Unable to ascertain a primary disorder. Please reconsider the validity of your sample.";
 };
-
+//we position and size modal according to window size
 function setAnionGapModalPosition() {
 	$('.aniongap-modal').css("top", ( $(window).height() - $('.aniongap-modal').height() ) * 0.3 );
 	width = setAnionGapModalWidth($(window).width());
 	$('.aniongap-modal').width(width);
 	$('.aniongap-modal').css("left", ( $(window).width() - width ) * 0.5  );
 };
-
+//Calculate modal width
 function setAnionGapModalWidth (window) {
 	if ( window < 620  ) {
 		width = window * 0.85;
@@ -163,7 +163,7 @@ $(document).ready(function(){
 
 	$('input[type=number]').val("");
     $('#pH').focus();
-
+    //setting analyte units
     $('.SI').hide();
     loadPreference();
     var units = "mmHg";
@@ -284,7 +284,7 @@ $(document).ready(function(){
             alert("Secondary: " + secondary + " " + typeof secondary);
             alert(primary !== "There is no acid-base disturbance");
         }
-        //We log acid-base result to page
+        //We display acid-base result to page
         if (secondary != noDisorder && error_present == false) {
         	$(".acidbase").append("<p><strong>Primary:</strong> " + primary + "</p>");
         	$(".acidbase").append("<p><strong>Secondary:</strong> " + secondary + "</p>");
@@ -298,24 +298,18 @@ $(document).ready(function(){
             $(".acidbase").append("<div class='row' id='suggestions'><div class='col-xs-6'><a class='aetiologies suggested' href='#suggestions'>Get Suggested Aetiologies</a></div><div class='col-xs-6'><button id='reanalyse'>Analyse another ABG</button></div></div>");
             $('#results > #reanalyse').hide();
         }
-        //expands anion gap modal
+        //shows anion gap modal
         $('.checkanion').click(function(){
-            /*if ($('.checkanion').hasClass('toggled')) {
-                $('#submitanion').hide();
-                $('.checkanion').removeClass('toggled').text("Check Anion Gap");
-                $('#submitanion input[type=number]').val(0);
-            } else {*/
-            	setAnionGapModalPosition();
-            	$('.aniongap-modal').slideDown();                
-            // }
+            setAnionGapModalPosition();
+            $('.aniongap-modal').slideDown();
         });
-        //close anion gap modal
+        //closes anion gap modal
         $('#closeanion').click(function(event){
         	event.preventDefault();
-        	$('.aniongap-modal').hide();
+        	$('.aniongap-modal').slideUp();
         	$('#submitanion input[type=number]').val("");
         });
-        //anion gap calculator
+        //anion gap calculations
         $('#submitanion').submit(function(){
             var sodium = parseInt($('#sodium').val());
             var chloride = parseInt($('#chloride').val());
