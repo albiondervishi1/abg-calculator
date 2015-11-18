@@ -298,7 +298,7 @@ $(document).ready(function(){
             $(".acidbase").append("<div class='row' id='suggestions'><div class='col-xs-6'><a class='aetiologies suggested' href='#suggestions'>Get Suggested Aetiologies</a></div><div class='col-xs-6'><button id='reanalyse'>Analyse another ABG</button></div></div>");
             $('#results > #reanalyse').hide();
         }
-        //expands anion gap form
+        //expands anion gap modal
         $('.checkanion').click(function(){
             /*if ($('.checkanion').hasClass('toggled')) {
                 $('#submitanion').hide();
@@ -308,6 +308,12 @@ $(document).ready(function(){
             	setAnionGapModalPosition();
             	$('.aniongap-modal').slideDown();                
             // }
+        });
+        //close anion gap modal
+        $('#closeanion').click(function(event){
+        	event.preventDefault();
+        	$('.aniongap-modal').hide();
+        	$('#submitanion input[type=number]').val("");
         });
         //anion gap calculator
         $('#submitanion').submit(function(){
