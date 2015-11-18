@@ -95,18 +95,9 @@
 					<input type="submit" value="Analyse Gas">
 				</form>	
 				<div id="results">
-					<div class="submitted-values">
-						<h2>What you submitted:</h2>
-					</div>
-					<div class="validity" role="alert"></div>
-					<div class="respiratory">
-						<h2>Respiratory Disorder:</h2>
-						<p>Oxygenation Status: <em>Feature yet to be developed</em></p>
-						<p>Ventilatory Status: <em>Feature yet to be developed</em></p>
-					</div>
-					<div class="acidbase">
-						<h2>Acid-Base Disorder:</h2>
-						<form role="form" class="form-inline" id="submitanion">
+					<div class="aniongap-modal">
+						<a href="#" id='closeanion'>&times;</a>
+						<form role="form" class="form" id="submitanion">
 							<div class="form-group">
     							<label for="sodium">Na<sup>+</sup></label>
     							<div class="input-group">
@@ -121,8 +112,20 @@
     								<div class="input-group-addon">mmol/L</div>
     							</div>
   							</div>
-  							<input type="submit" value="Check Anion Gap">
+  							<input type="submit" class="modal-button" value="Check Anion Gap" id="checkanionbutton">
 						</form>
+					</div>
+					<div class="submitted-values">
+						<h2>What you submitted:</h2>
+					</div>
+					<div class="validity" role="alert"></div>
+					<div class="respiratory">
+						<h2>Respiratory Disorder:</h2>
+						<p>Oxygenation Status: <em>Feature yet to be developed</em></p>
+						<p>Ventilatory Status: <em>Feature yet to be developed</em></p>
+					</div>
+					<div class="acidbase">
+						<h2>Acid-Base Disorder:</h2>
 					</div>
 					<button id="reanalyse">Analyse another ABG</button>
 				</div>

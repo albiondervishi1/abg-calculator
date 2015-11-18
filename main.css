@@ -83,11 +83,11 @@ form, #units {
 	padding: 10px 0px;
 }
 
-#results, .disorders, .abdisorders, #submitanion {
+#results, .disorders, .abdisorders {
 	display: none;
 }
 
-#reanalyse, input[type=submit], .aetiologies {
+#reanalyse, input[type=submit], .aetiologies, .modal-button {
 	border: none;
 	border-radius: 2px;
 	padding: 10px 20px;
@@ -98,8 +98,12 @@ form, #units {
 	font-size: 18px;
 }
 
+#submitanion {
+	padding: 30px 15px;
+}
+
 #submitanion label {
-	margin: auto 10px;
+	margin: 10px;
 }
 
 .checkanion {
@@ -111,6 +115,26 @@ form, #units {
 	font-size: 14px;
 	width: 195px;
 	margin-left: 20px;
+}
+
+.aniongap-modal {
+	width: 600px;
+	height: 300px;
+	position: fixed;
+	background-color: gray;
+	display: none;
+	z-index: 1;
+}
+
+#closeanion {
+	position: absolute;
+	right: 15px;
+	font-size: 26px;
+	color: white;
+}
+
+#closeanion:hover {
+	text-decoration: none;
 }
 
 .glyphicon {
@@ -127,7 +151,7 @@ form, #units {
 	color: white;
 }
 
-#reanalyse:hover, input[type=submit]:hover, .aetiologies:hover {
+#reanalyse:hover, input[type=submit]:hover, .aetiologies:hover, .modal-button:hover {
 	color: #34B3A0;
 	background-color: white;
 }

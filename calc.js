@@ -279,14 +279,14 @@ $(document).ready(function(){
         }
         //expands anion gap form
         $('.checkanion').click(function(){
-            if ($('.checkanion').hasClass('toggled')) {
+            /*if ($('.checkanion').hasClass('toggled')) {
                 $('#submitanion').hide();
                 $('.checkanion').removeClass('toggled').text("Check Anion Gap");
                 $('#submitanion input[type=number]').val(0);
-            } else {
-                $('.checkanion').closest('.acidbase').find('p').first().after($('#submitanion').show());
-                $('.checkanion').addClass('toggled').text("Close Anion Gap Calculator");
-            }
+            } else {*/
+            	$('.aniongap-modal').css({'top': ($(window).height() - $('.aniongap-modal').height()) * 0.3,'left': ($(window).width() - $('.aniongap-modal').width()) * 0.5})
+            	$('.aniongap-modal').slideDown();                
+            // }
         });
         //anion gap calculator
         $('#submitanion').submit(function(){
