@@ -304,13 +304,13 @@ $(document).ready(function(){
         }
         //We display acid-base result to page
         if (secondary != noDisorder && error_present == false) {
-        	$(".acidbase").append("<p><strong>Primary:</strong> " + primary + "</p>");
-        	$(".acidbase").append("<p><strong>Secondary:</strong> " + secondary + "</p>");
+        	$(".acidbase-results").append("<p class='result'><strong>Primary:</strong> " + primary + "</p>");
+        	$(".acidbase-results").append("<p class='result'><strong>Secondary:</strong> " + secondary + "</p>");
         } else {
-        	$(".acidbase").append("<p>" + primary + "</p>");
+        	$(".acidbase-results").append("<p class='result'>" + primary + "</p>");
         }
         if (onset != "" && error_present == false && (primary == respiratoryAlkalosis || primary == respiratoryAcidosis)) {
-            $(".acidbase").append("<p><strong>Respiratory Onset:</strong> " + onset + "</p>")
+            $(".acidbase-results").append("<p class='result'><strong>Respiratory Onset:</strong> " + onset + "</p>")
         }
         if (primary != "There is no acid-base disturbance" && error_present == false) {
             $(".acidbase").append("<div class='row' id='suggestions'><div class='col-xs-6'><a class='aetiologies suggested' href='#suggestions'>Get Suggested Aetiologies</a></div><div class='col-xs-6'><button id='reanalyse'>Analyse another ABG</button></div></div>");
@@ -354,10 +354,11 @@ $(document).ready(function(){
         	//storing anion gap form inputs
             var sodium = parseInt($('#sodium').val());
             var chloride = parseInt($('#chloride').val());
+            var inputtedAlbumin = parseInt($('#albumin').val());
             if ( conversionFactor == 1 ) {
-            	var albumin = parseInt($('#albumin').val());
+            	var albumin = inputtedAlbumin;
             } else {
-            	var albumin = parseInt($('#albumin').val()) / 10;
+            	var albumin = inputtedAlbumin / 10;
             }
             //calculating anion gap depending on albumin level and tabulating submitted values
             if ( isNaN(albumin) ) {
@@ -379,10 +380,10 @@ $(document).ready(function(){
 	                                            Cl<sup>-</sup> <span class='badge'>" + chloride + anionUnits + "</span>\
 	                                        </div>\
 	                                        <div class='col-xs-4 submitted-value'>\
-	                                            Albumin <span class='badge'>" + albumin + albuminUnits + "</span>\
+	                                            Albumin <span class='badge'>" + inputtedAlbumin + albuminUnits + "</span>\
 	                                        </div>");
             }
-                        
+			//analysing anion gap result
             if (anionGapValue > 12) {
                 anionGapRatio = (anionGapValue - 12) / (24 - HCO3);
                 if (anionGapRatio > 2) {
@@ -395,13 +396,16 @@ $(document).ready(function(){
             } else {
                 var anionGap = "Normal anion gap (" + anionGapValue + anionUnits + ")";
             }
-            $(".acidbase").find('p').last().after("<p><strong>Anion Gap:</strong> " + anionGap + "</p>");
-            if (anionGapValue <= 12) {
-                $(".acidbase").find('p').last().after("<p><span class='glyphicon glyphicon-minus-sign'></span> In patients with hypoalbuminemia the normal anion gap is lower than 12mmol/L - in these patients the anion gap is about 2.5 mEq/L lower for each 1 gm/dL decrease in the plasma albumin concentration </p>");
+            //putting anion gap analysis to page
+            $(".acidbase-results").append("<p class='result'><strong>Anion Gap:</strong> " + anionGap + "</p>");
+            if ( isNaN(albumin) && anionGapValue <= 12) {
+                $(".acidbase-results").append("<p class='result'><span class='glyphicon glyphicon-minus-sign'></span> In patients with hypoalbuminemia the normal anion gap is lower than 12mmol/L - in these patients the anion gap is about 2.5 mEq/L lower for each 1 gm/dL decrease in the plasma albumin concentration </p>");
             }
             if (anionGapValue > 12) {
-                $(".acidbase").find('p').last().after("<p><span class='glyphicon glyphicon-minus-sign'></span>  Consider calculating the osmolal gap if the anion gap cannot be explained by an obvious cause or toxic ingestion is suspected. The osmolal gap formula is:  Plasma Osmolality - 2*(Na<sup>+</sup> mmol/L) + (glucose mmol/L)/18 + (urea mmol/L)/2.8 + 1.25*(ethanol mmol/L)</p>");
-                $(".acidbase").find('p').last().after("<p><span class='glyphicon glyphicon-minus-sign'></span>  Please note that the disorder suggested after the anion gap value is based on variability from normal anion gap- thus this will no be accurate for patients with hypoalbuminemia as their normal anion gap is lower than 12mmol/L - in these patients the anion gap is about 2.5 mEq/L lower for each 1 gm/dL decrease in the plasma albumin concentration </p>");
+                $(".acidbase-results").append("<p class='result'><span class='glyphicon glyphicon-minus-sign'></span>  Consider calculating the osmolal gap if the anion gap cannot be explained by an obvious cause or toxic ingestion is suspected.</p>");
+                if ( isNaN(albumin) ) {
+                	$(".acidbase-results").append("<p class='result'><span class='glyphicon glyphicon-minus-sign'></span>  The disorder suggested after the anion gap value is based on variability from normal anion gap - thus this will not be accurate for patients with hypoalbuminemia as their normal anion gap is lower than 12mmol/L - in these patients the anion gap is about 2.5 mEq/L lower for each 1 gm/dL decrease in the plasma albumin concentration </p>");
+                }
             }
         });
         //toggle panels suggested aetiologies panels into view
@@ -457,7 +461,8 @@ $(document).ready(function(){
         $("form[name=abgcalc]").fadeOut("600");
         $("#results").delay("600").slideDown("600");
         $('#reanalyse').click(function(){
-            $(".acidbase p, .acidbase button, #results .panel, .values-row").remove()
+        	$('.acidbase-results').empty();
+            $(".acidbase button, #results .panel, .values-row").remove();
             $('#suggestions').remove();
             $(".validity").empty().removeClass('alert alert-danger');
             $("#results").css('display', 'none');
