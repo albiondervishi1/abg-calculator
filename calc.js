@@ -317,6 +317,7 @@ $(document).ready(function(){
             $('.electrolyte-addon').append(anionUnits);
             $('.albumin-addon').append(albuminUnits);
             albuminPlaceholder( $(window).width() );
+            $('.mask').css({'width': '100%', 'height': '100%' });
             $('.aniongap-modal').fadeIn();
             $('#sodium').focus();
             //we change size of anion gap modal if viewport size changes
@@ -339,6 +340,7 @@ $(document).ready(function(){
         $('#closeanion').click(function(event){
         	event.preventDefault();
         	$('.aniongap-modal').fadeOut();
+        	$('.mask').css({'width': '0', 'height': '0' });
         	$(window).off('resize');
         });
         //anion gap calculations

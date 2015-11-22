@@ -20,6 +20,15 @@ body {
 	color: white !important;
 }
 
+.mask {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: gray;
+	opacity: 0.5;
+	z-index: 1;
+}
+
 h1, h2, h3, label, p, button, input[type=submit], #units, .submitted-value {
 	color: white;
 }
@@ -124,9 +133,10 @@ form, #units {
 .aniongap-modal {
 	height: 320px;
 	position: fixed;
-	background-color: gray;
+	background-color: #204056;
+	border-radius: 2px;
 	display: none;
-	z-index: 1;
+	z-index: 2;
 }
 
 #closeanion {
