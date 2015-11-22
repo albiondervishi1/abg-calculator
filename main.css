@@ -169,7 +169,7 @@ form, #units {
 	color: white;
 }
 
-#reanalyse:hover, input[type=submit]:hover, .aetiologies:hover, .modal-button:hover {
+#reanalyse:hover, input[type=submit]:hover, .aetiologies:hover, .modal-button:hover, .checkanion:hover {
 	color: #34B3A0;
 	background-color: white;
 }
