@@ -301,13 +301,13 @@ $(document).ready(function(){
         //shows anion gap modal
         $('.checkanion').click(function(){
             setAnionGapModalPosition();
-            $('.aniongap-modal').slideDown();
+            $('.aniongap-modal').fadeIn();
             $('#sodium').focus();
         });
         //closes anion gap modal
         $('#closeanion').click(function(event){
         	event.preventDefault();
-        	$('.aniongap-modal').slideUp();
+        	$('.aniongap-modal').fadeOut();
         	$('#submitanion input[type=number]').val("");
         });
         //anion gap calculations
