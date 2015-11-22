@@ -193,16 +193,16 @@ $(document).ready(function(){
         //tabulating user's inputs
         $('.submitted-values').append("<div class='container values-row'>\
                                             <div class='row'>\
-                                                <div class='col-xs-6 col-sm-3'>\
+                                                <div class='col-xs-6 col-sm-3 submitted-value'>\
                                                     pH <span class='badge'> " + pH + " </span>\
                                                 </div>\
-                                                <div class='col-xs-6 col-sm-3'>\
+                                                <div class='col-xs-6 col-sm-3 submitted-value'>\
                                                     P<sub>a</sub>O<sub>2</sub> <span class='badge'>" + (PaO2 * conversionFactor).toFixed(1)  + units + "</span>\
                                                 </div>\
-                                                <div class='col-xs-6 col-sm-3'>\
+                                                <div class='col-xs-6 col-sm-3 submitted-value'>\
                                                     P<sub>a</sub>CO<sub>2</sub> <span class='badge'>" + (PaCO2 * conversionFactor).toFixed(1) + units + "</span>\
                                                 </div>\
-                                                <div class='col-xs-6 col-sm-3'>\
+                                                <div class='col-xs-6 col-sm-3 submitted-value'>\
                                                     HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + "mmEq/L</span>\
                                                 </div>\
                                             </div>\
@@ -310,16 +310,24 @@ $(document).ready(function(){
         	$('#submitanion input[type=number]').val("");
         });
         //anion gap calculations
-        $('#submitanion').submit(function(){
+        $('#submitanion').submit(function(event){
+        	event.preventDefault();
             var sodium = parseInt($('#sodium').val());
             var chloride = parseInt($('#chloride').val());
             alert("Sodium: " + sodium + " " + typeof sodium);
             alert("Chloride: " + chloride + " " + typeof chloride);
             var aniongapValue = sodium - chloride - HCO3;
             alert("Anion gap: " + aniongapValue + typeof aniongapValue);
-            $('tr').append("<td>Na<sup>+</sup> <span class='badge'>" + sodium + "mmol/L </span></td><td>Cl<sup>-</sup> <span class='badge'>" + chloride + "mmol/L</span></td>");
-            $('#submitanion input[type=number]').val(0);
-            $('#submitanion, .checkanion').hide();
+            $('.values-row .row').append("<div class='col-xs-6 col-sm-4 submitted-value'>\
+                                            Na<sup>+</sup> <span class='badge'>" + sodium + "mmol/L</span>\
+                                        </div>\
+                                        <div class='col-xs-6 col-sm-4 submitted-value'>\
+                                            Cl-<sup>+</sup> <span class='badge'>" + chloride + "mmol/L</span>\
+                                        </div>");
+            $('.col-sm-3').addClass("col-sm-4").removeClass("col-sm-3");
+            $('.col-xs-6').addClass("col-md-2");
+            $('#submitanion input[type=number]').val("");
+            $('.aniongap-modal, .checkanion').hide();
             if (aniongapValue > 12) {
                 aniongapRatio = (aniongapValue - 12) / (24 - HCO3);
                 if (aniongapRatio > 2) {

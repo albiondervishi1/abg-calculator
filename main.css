@@ -20,11 +20,11 @@ body {
 	color: white !important;
 }
 
-h1, h2, label, p, button, input[type=submit], #units, .col-sm-3 {
+h1, h2, label, p, button, input[type=submit], #units, .submitted-value {
 	color: white;
 }
 
-p, button, input[type=submit], .col-sm-3, .badge {
+p, button, input[type=submit], .submitted-value, .badge {
 	font-size: 18px;
 }
 
@@ -77,7 +77,7 @@ form, #units {
 	border-bottom: 3px solid #34B3A0;
 }
 
-.col-sm-3 {
+.submitted-value {
 	text-align: center;
 	vertical-align: middle;
 	padding: 10px 0px;
@@ -174,8 +174,14 @@ footer a:hover {
 	color: #34B3A0;
 }
 
-@media screen and (max-width: 370px) {
-	.submitted-values > .container > .row > .col-xs-6 > span {
+@media screen and (max-width: 1200px) {
+	.submitted-values > .container > .row > .submitted-value > span {
+		display: block !important;
+	}
+}
+
+@media screen and (max-width: 560px) {
+	.submitted-values > .container > .row > .submitted-value > span {
 		display: block !important;
 	}
 }
