@@ -461,16 +461,7 @@ $(document).ready(function(){
         $("form[name=abgcalc]").fadeOut("600");
         $("#results").delay("600").slideDown("600");
         $('#reanalyse').click(function(){
-        	$('.acidbase-results').empty();
-            $(".acidbase button, #results .panel, .values-row").remove();
-            $('#suggestions').remove();
-            $(".validity").empty().removeClass('alert alert-danger');
-            $("#results").css('display', 'none');
-            $('input[type=number]').val("");
-            $('#units, #results > #reanalyse').show();
-            $("form[name=abgcalc]").show();
-            $('#pH').focus();
-            error_present = false;
+        	window.location = "index.html";
         });
     });
 });
