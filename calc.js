@@ -302,6 +302,7 @@ $(document).ready(function(){
         $('.checkanion').click(function(){
             setAnionGapModalPosition();
             $('.aniongap-modal').slideDown();
+            $('#sodium').focus();
         });
         //closes anion gap modal
         $('#closeanion').click(function(event){
