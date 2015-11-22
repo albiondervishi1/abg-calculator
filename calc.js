@@ -191,6 +191,11 @@ $(document).ready(function(){
         var HCO3PercentageChange = HCO3Change / 24;
 
         //tabulating user's inputs
+        if (conversionFactor == 1) {
+        	anionUnits = "mEq/L";
+        } else {
+        	anionUnits = "mmol/L";
+        }
         $('.submitted-values').append("<div class='container values-row'>\
                                             <div class='row'>\
                                                 <div class='col-xs-6 col-sm-3 submitted-value'>\
@@ -203,7 +208,7 @@ $(document).ready(function(){
                                                     P<sub>a</sub>CO<sub>2</sub> <span class='badge'>" + (PaCO2 * conversionFactor).toFixed(1) + units + "</span>\
                                                 </div>\
                                                 <div class='col-xs-6 col-sm-3 submitted-value'>\
-                                                    HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + "mmEq/L</span>\
+                                                    HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + anionUnits + "</span>\
                                                 </div>\
                                             </div>\
                                         </div>");
@@ -303,11 +308,6 @@ $(document).ready(function(){
         	$('#submitanion input[type=number]').val("");
         	$('.aniongap-modal .input-group-addon').empty();
             setAnionGapModalPosition();
-            if (conversionFactor == 1) {
-            	anionUnits = "mEq/L";
-            } else {
-            	anionUnits = "mmol/L";
-            }
             $('.aniongap-modal .input-group-addon').append(anionUnits);
             $('.aniongap-modal').fadeIn();
             $('#sodium').focus();
@@ -322,8 +322,8 @@ $(document).ready(function(){
         	event.preventDefault();
             var sodium = parseInt($('#sodium').val());
             var chloride = parseInt($('#chloride').val());
-            var aniongapValue = sodium - chloride - HCO3;
-            alert("Anion gap: " + aniongapValue + typeof aniongapValue);
+            var anionGapValue = sodium - chloride - HCO3;
+            alert("Anion gap: " + anionGapValue + typeof anionGapValue);
             $('.values-row .row').append("<div class='col-xs-6 col-sm-4 submitted-value'>\
                                             Na<sup>+</sup> <span class='badge'>" + sodium + anionUnits + "</span>\
                                         </div>\
@@ -332,25 +332,25 @@ $(document).ready(function(){
                                         </div>");
             $('.col-sm-3').addClass("col-sm-4").removeClass("col-sm-3");
             $('.col-xs-6').addClass("col-md-2");
-            $('#submitanion input[type=number]').val("");
-            $('.aniongap-modal, .checkanion').hide();
-            if (aniongapValue > 12) {
-                aniongapRatio = (aniongapValue - 12) / (24 - HCO3);
-                if (aniongapRatio > 2) {
-                    var aniongap = "High anion gap (" + aniongapValue + ") - a concurrent metabolic alkalosis is likely to be present";
-                } else if (aniongapRatio < 1) {
-                    var aniongap = "High anion gap (" + aniongapValue + ") - a concurrent normal anion-gap metabolic acidosis is likely to be present";
+            $('.aniongap-modal').fadeOut();
+            $('.checkanion').hide();
+            if (anionGapValue > 12) {
+                anionGapRatio = (anionGapValue - 12) / (24 - HCO3);
+                if (anionGapRatio > 2) {
+                    var anionGap = "High anion gap (" + anionGapValue + ") - a concurrent metabolic alkalosis is likely to be present";
+                } else if (anionGapRatio < 1) {
+                    var anionGap = "High anion gap (" + anionGapValue + ") - a concurrent normal anion-gap metabolic acidosis is likely to be present";
                 } else {
-                    var aniongap = "High anion gap (" + aniongapValue + ") - pure anion gap acidosis";
+                    var anionGap = "High anion gap (" + anionGapValue + ") - pure anion gap acidosis";
                 }
             } else {
-                var aniongap = "Normal anion gap (" + aniongapValue + ")";
+                var anionGap = "Normal anion gap (" + anionGapValue + ")";
             }
-            $(".acidbase").find('p').last().after("<p><strong>Anion Gap:</strong> " + aniongap + "</p>");
-            if (aniongapValue <= 12) {
+            $(".acidbase").find('p').last().after("<p><strong>Anion Gap:</strong> " + anionGap + "</p>");
+            if (anionGapValue <= 12) {
                 $(".acidbase").find('p').last().after("<p><span class='glyphicon glyphicon-minus-sign'></span> In patients with hypoalbuminemia the normal anion gap is lower than 12mmol/L - in these patients the anion gap is about 2.5 mEq/L lower for each 1 gm/dL decrease in the plasma albumin concentration </p>");
             }
-            if (aniongapValue > 12) {
+            if (anionGapValue > 12) {
                 $(".acidbase").find('p').last().after("<p><span class='glyphicon glyphicon-minus-sign'></span>  Consider calculating the osmolal gap if the anion gap cannot be explained by an obvious cause or toxic ingestion is suspected. The osmolal gap formula is:  Plasma Osmolality - 2*(Na<sup>+</sup> mmol/L) + (glucose mmol/L)/18 + (urea mmol/L)/2.8 + 1.25*(ethanol mmol/L)</p>");
                 $(".acidbase").find('p').last().after("<p><span class='glyphicon glyphicon-minus-sign'></span>  Please note that the disorder suggested after the anion gap value is based on variability from normal anion gap- thus this will no be accurate for patients with hypoalbuminemia as their normal anion gap is lower than 12mmol/L - in these patients the anion gap is about 2.5 mEq/L lower for each 1 gm/dL decrease in the plasma albumin concentration </p>");
             }
@@ -395,7 +395,7 @@ $(document).ready(function(){
                 if (secondary === metabolicAlkalosis) {
                     $('#results').append($('#metabolic-alkalosis').html());
                 }
-                if (aniongapRatio > 2) {
+                if (anionGapRatio > 2) {
                     $('#results').append($('#metabolic-alkalosis').html());
                 }
             } else {
