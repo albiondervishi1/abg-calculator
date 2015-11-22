@@ -387,15 +387,16 @@ $(document).ready(function(){
 			//analysing anion gap result
             if (anionGapValue > 12) {
                 anionGapRatio = (anionGapValue - 12) / (24 - HCO3);
+                var anionGap = "High anion gap <span class='badge'>" + anionGapValue + anionUnits + "</span> - ";
                 if (anionGapRatio > 2) {
-                    var anionGap = "High anion gap (" + anionGapValue + anionUnits + ") - a concurrent metabolic alkalosis is likely to be present";
+                    var anionGap = anionGap + "a concurrent metabolic alkalosis is likely to be present";
                 } else if (anionGapRatio < 1) {
-                    var anionGap = "High anion gap (" + anionGapValue + anionUnits + ") - a concurrent normal anion-gap metabolic acidosis is likely to be present";
+                    var anionGap = anionGap + "a concurrent normal anion-gap metabolic acidosis is likely to be present";
                 } else {
-                    var anionGap = "High anion gap (" + anionGapValue + anionUnits + ") - pure anion gap acidosis";
+                    var anionGap = anionGap + "pure anion gap acidosis";
                 }
             } else {
-                var anionGap = "Normal anion gap (" + anionGapValue + anionUnits + ")";
+                var anionGap = "Normal anion gap <span class='badge'>" + anionGapValue + anionUnits + "</span>";
             }
             //putting anion gap analysis to page
             $(".acidbase-results").append("<p class='result'><strong>Anion Gap:</strong> " + anionGap + "</p>");
@@ -403,7 +404,7 @@ $(document).ready(function(){
                 $(".acidbase-results").append("<p class='result'><span class='glyphicon glyphicon-minus-sign'></span> In patients with hypoalbuminemia the normal anion gap is lower than 12mmol/L - in these patients the anion gap is about 2.5 mEq/L lower for each 1 gm/dL decrease in the plasma albumin concentration </p>");
             }
             if (anionGapValue > 12) {
-                $(".acidbase-results").append("<p class='result'><span class='glyphicon glyphicon-minus-sign'></span>  Consider calculating the osmolal gap if the anion gap cannot be explained by an obvious cause or toxic ingestion is suspected.</p>");
+                $(".acidbase-results").append("<p class='result'><span class='glyphicon glyphicon-minus-sign'></span>  Consider calculating the osmolal gap if the anion gap cannot be explained by an obvious cause or if toxic ingestion is suspected.</p>");
                 if ( isNaN(albumin) ) {
                 	$(".acidbase-results").append("<p class='result'><span class='glyphicon glyphicon-minus-sign'></span>  The disorder suggested after the anion gap value is based on variability from normal anion gap - thus this will not be accurate for patients with hypoalbuminemia as their normal anion gap is lower than 12mmol/L - in these patients the anion gap is about 2.5 mEq/L lower for each 1 gm/dL decrease in the plasma albumin concentration </p>");
                 }
