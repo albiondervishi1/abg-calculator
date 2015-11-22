@@ -300,7 +300,15 @@ $(document).ready(function(){
         }
         //shows anion gap modal
         $('.checkanion').click(function(){
+        	$('#submitanion input[type=number]').val("");
+        	$('.aniongap-modal .input-group-addon').empty();
             setAnionGapModalPosition();
+            if (conversionFactor == 1) {
+            	anionUnits = "mEq/L";
+            } else {
+            	anionUnits = "mmol/L";
+            }
+            $('.aniongap-modal .input-group-addon').append(anionUnits);
             $('.aniongap-modal').fadeIn();
             $('#sodium').focus();
         });
@@ -308,22 +316,19 @@ $(document).ready(function(){
         $('#closeanion').click(function(event){
         	event.preventDefault();
         	$('.aniongap-modal').fadeOut();
-        	$('#submitanion input[type=number]').val("");
         });
         //anion gap calculations
         $('#submitanion').submit(function(event){
         	event.preventDefault();
             var sodium = parseInt($('#sodium').val());
             var chloride = parseInt($('#chloride').val());
-            alert("Sodium: " + sodium + " " + typeof sodium);
-            alert("Chloride: " + chloride + " " + typeof chloride);
             var aniongapValue = sodium - chloride - HCO3;
             alert("Anion gap: " + aniongapValue + typeof aniongapValue);
             $('.values-row .row').append("<div class='col-xs-6 col-sm-4 submitted-value'>\
-                                            Na<sup>+</sup> <span class='badge'>" + sodium + "mmol/L</span>\
+                                            Na<sup>+</sup> <span class='badge'>" + sodium + anionUnits + "</span>\
                                         </div>\
                                         <div class='col-xs-6 col-sm-4 submitted-value'>\
-                                            Cl-<sup>+</sup> <span class='badge'>" + chloride + "mmol/L</span>\
+                                            Cl-<sup>+</sup> <span class='badge'>" + chloride + anionUnits + "</span>\
                                         </div>");
             $('.col-sm-3').addClass("col-sm-4").removeClass("col-sm-3");
             $('.col-xs-6').addClass("col-md-2");
