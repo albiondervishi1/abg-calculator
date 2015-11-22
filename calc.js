@@ -193,8 +193,10 @@ $(document).ready(function(){
         //tabulating user's inputs
         if (conversionFactor == 1) {
         	anionUnits = "mEq/L";
+        	albuminUnits = "g/dL";
         } else {
         	anionUnits = "mmol/L";
+        	albuminUnits = "g/L";
         }
         $('.submitted-values').append("<div class='container values-row'>\
                                             <div class='row'>\
@@ -308,7 +310,8 @@ $(document).ready(function(){
         	$('#submitanion input[type=number]').val("");
         	$('.aniongap-modal .input-group-addon').empty();
             setAnionGapModalPosition();
-            $('.aniongap-modal .input-group-addon').append(anionUnits);
+            $('.electrolyte-addon').append(anionUnits);
+            $('.albumin-addon').append(albuminUnits);
             $('.aniongap-modal').fadeIn();
             $('#sodium').focus();
         });
