@@ -37,6 +37,7 @@ function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClas
     units = unitSuffix;
     conversionFactor = conversionRate;
     rememberPreference(thisUnitToggle);
+    $('#pH').focus();
 };
 
 //Get initial values on form submission
@@ -460,6 +461,7 @@ $(document).ready(function(){
         });
         $("form[name=abgcalc]").fadeOut("600");
         $("#results").delay("600").slideDown("600");
+        //goes to home page
         $('#reanalyse').click(function(){
         	window.location = "index.html";
         });
