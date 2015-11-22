@@ -358,13 +358,13 @@ $(document).ready(function(){
             } else {
             	var albumin = parseInt($('#albumin').val()) / 10;
             }
-            if ( albumin != NaN ) {
-
-            } else {
+            //calculating anion gap depending on albumin level
+            if ( isNaN(albumin) ) {
             	var anionGapValue = sodium - chloride - HCO3;
+            } else {
+            	var anionGapValue = Math.round( (sodium - chloride - HCO3) + (2.5 * (4 - albumin) ) );
             }
 
-            alert("Anion gap: " + anionGapValue + typeof anionGapValue);
             $('.values-row .row').append("<div class='col-xs-6 col-sm-4 submitted-value'>\
                                             Na<sup>+</sup> <span class='badge'>" + sodium + anionUnits + "</span>\
                                         </div>\
@@ -378,14 +378,14 @@ $(document).ready(function(){
             if (anionGapValue > 12) {
                 anionGapRatio = (anionGapValue - 12) / (24 - HCO3);
                 if (anionGapRatio > 2) {
-                    var anionGap = "High anion gap (" + anionGapValue + anionGapUnit + ") - a concurrent metabolic alkalosis is likely to be present";
+                    var anionGap = "High anion gap (" + anionGapValue + anionUnits + ") - a concurrent metabolic alkalosis is likely to be present";
                 } else if (anionGapRatio < 1) {
-                    var anionGap = "High anion gap (" + anionGapValue + anionGapUnit + ") - a concurrent normal anion-gap metabolic acidosis is likely to be present";
+                    var anionGap = "High anion gap (" + anionGapValue + anionUnits + ") - a concurrent normal anion-gap metabolic acidosis is likely to be present";
                 } else {
-                    var anionGap = "High anion gap (" + anionGapValue + anionGapUnit + ") - pure anion gap acidosis";
+                    var anionGap = "High anion gap (" + anionGapValue + anionUnits + ") - pure anion gap acidosis";
                 }
             } else {
-                var anionGap = "Normal anion gap (" + anionGapValue + anionGapUnit + ")";
+                var anionGap = "Normal anion gap (" + anionGapValue + anionUnits + ")";
             }
             $(".acidbase").find('p').last().after("<p><strong>Anion Gap:</strong> " + anionGap + "</p>");
             if (anionGapValue <= 12) {
