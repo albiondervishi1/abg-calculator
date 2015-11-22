@@ -322,6 +322,7 @@ $(document).ready(function(){
         	event.preventDefault();
             var sodium = parseInt($('#sodium').val());
             var chloride = parseInt($('#chloride').val());
+            var albumin = parseInt($('#albumin').val());
             var anionGapValue = sodium - chloride - HCO3;
             alert("Anion gap: " + anionGapValue + typeof anionGapValue);
             $('.values-row .row').append("<div class='col-xs-6 col-sm-4 submitted-value'>\
