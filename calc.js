@@ -366,17 +366,17 @@ $(document).ready(function(){
 	                                            Na<sup>+</sup> <span class='badge'>" + sodium + anionUnits + "</span>\
 	                                        </div>\
 	                                        <div class='col-xs-6 col-sm-4 submitted-value'>\
-	                                            Cl-<sup>+</sup> <span class='badge'>" + chloride + anionUnits + "</span>\
+	                                            Cl<sup>-</sup> <span class='badge'>" + chloride + anionUnits + "</span>\
 	                                        </div>");
-	            $('.col-sm-3').addClass("col-sm-4").removeClass("col-sm-3");
-	            $('.col-xs-6').addClass("col-md-2");
+	            $('.values-row .col-sm-3').addClass("col-sm-4").removeClass("col-sm-3");
+	            $('.values-row .col-xs-6').addClass("col-md-2");
             } else {
             	var anionGapValue = Math.round( (sodium - chloride - HCO3) + (2.5 * (4 - albumin) ) );
             	$('.values-row .row').append("<div class='col-xs-4 submitted-value'>\
 	                                            Na<sup>+</sup> <span class='badge'>" + sodium + anionUnits + "</span>\
 	                                        </div>\
 	                                        <div class='col-xs-4 submitted-value'>\
-	                                            Cl-<sup>+</sup> <span class='badge'>" + chloride + anionUnits + "</span>\
+	                                            Cl<sup>-</sup> <span class='badge'>" + chloride + anionUnits + "</span>\
 	                                        </div>\
 	                                        <div class='col-xs-4 submitted-value'>\
 	                                            Albumin <span class='badge'>" + albumin + albuminUnits + "</span>\
