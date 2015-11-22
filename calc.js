@@ -163,6 +163,13 @@ function albuminPlaceholder (width) {
 	}
 };
 
+function closeAnionModal(event) {
+	event.preventDefault();
+	$('.aniongap-modal').fadeOut();
+	$('.mask').css({'width': '0', 'height': '0' });
+	$(window).off('resize');
+};
+
 $(document).ready(function(){
 
 	$('input[type=number]').val("");
@@ -338,14 +345,12 @@ $(document).ready(function(){
         });
         //closes anion gap modal
         $('#closeanion').click(function(event){
-        	event.preventDefault();
-        	$('.aniongap-modal').fadeOut();
-        	$('.mask').css({'width': '0', 'height': '0' });
-        	$(window).off('resize');
+        	closeAnionModal(event);
         });
         //anion gap calculations
         $('#submitanion').submit(function(event){
-        	event.preventDefault();
+        	closeAnionModal(event);
+        	//storing anion gap form inputs
             var sodium = parseInt($('#sodium').val());
             var chloride = parseInt($('#chloride').val());
             if ( conversionFactor == 1 ) {
@@ -353,8 +358,12 @@ $(document).ready(function(){
             } else {
             	var albumin = parseInt($('#albumin').val()) / 10;
             }
-            alert(albumin);
-            var anionGapValue = sodium - chloride - HCO3;
+            if ( albumin != NaN ) {
+
+            } else {
+            	var anionGapValue = sodium - chloride - HCO3;
+            }
+
             alert("Anion gap: " + anionGapValue + typeof anionGapValue);
             $('.values-row .row').append("<div class='col-xs-6 col-sm-4 submitted-value'>\
                                             Na<sup>+</sup> <span class='badge'>" + sodium + anionUnits + "</span>\
@@ -364,21 +373,19 @@ $(document).ready(function(){
                                         </div>");
             $('.col-sm-3').addClass("col-sm-4").removeClass("col-sm-3");
             $('.col-xs-6').addClass("col-md-2");
-            $('.aniongap-modal').fadeOut();
-			$('.mask').css({'width': '0', 'height': '0' });
-        	$(window).off('resize');
             $('.checkanion').hide();
+            var anionGapUnit = "mEq/L";
             if (anionGapValue > 12) {
                 anionGapRatio = (anionGapValue - 12) / (24 - HCO3);
                 if (anionGapRatio > 2) {
-                    var anionGap = "High anion gap (" + anionGapValue + ") - a concurrent metabolic alkalosis is likely to be present";
+                    var anionGap = "High anion gap (" + anionGapValue + anionGapUnit + ") - a concurrent metabolic alkalosis is likely to be present";
                 } else if (anionGapRatio < 1) {
-                    var anionGap = "High anion gap (" + anionGapValue + ") - a concurrent normal anion-gap metabolic acidosis is likely to be present";
+                    var anionGap = "High anion gap (" + anionGapValue + anionGapUnit + ") - a concurrent normal anion-gap metabolic acidosis is likely to be present";
                 } else {
-                    var anionGap = "High anion gap (" + anionGapValue + ") - pure anion gap acidosis";
+                    var anionGap = "High anion gap (" + anionGapValue + anionGapUnit + ") - pure anion gap acidosis";
                 }
             } else {
-                var anionGap = "Normal anion gap (" + anionGapValue + ")";
+                var anionGap = "Normal anion gap (" + anionGapValue + anionGapUnit + ")";
             }
             $(".acidbase").find('p').last().after("<p><strong>Anion Gap:</strong> " + anionGap + "</p>");
             if (anionGapValue <= 12) {
