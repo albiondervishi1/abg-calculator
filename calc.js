@@ -348,7 +348,12 @@ $(document).ready(function(){
         	event.preventDefault();
             var sodium = parseInt($('#sodium').val());
             var chloride = parseInt($('#chloride').val());
-            var albumin = parseInt($('#albumin').val());
+            if ( conversionFactor == 1 ) {
+            	var albumin = parseInt($('#albumin').val());
+            } else {
+            	var albumin = parseInt($('#albumin').val()) / 10;
+            }
+            alert(albumin);
             var anionGapValue = sodium - chloride - HCO3;
             alert("Anion gap: " + anionGapValue + typeof anionGapValue);
             $('.values-row .row').append("<div class='col-xs-6 col-sm-4 submitted-value'>\
@@ -360,6 +365,8 @@ $(document).ready(function(){
             $('.col-sm-3').addClass("col-sm-4").removeClass("col-sm-3");
             $('.col-xs-6').addClass("col-md-2");
             $('.aniongap-modal').fadeOut();
+			$('.mask').css({'width': '0', 'height': '0' });
+        	$(window).off('resize');
             $('.checkanion').hide();
             if (anionGapValue > 12) {
                 anionGapRatio = (anionGapValue - 12) / (24 - HCO3);
