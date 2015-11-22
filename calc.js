@@ -156,10 +156,6 @@ function setAnionGapModalWidth (window) {
 };
 
 $(document).ready(function(){
-	//we change size of anion gap modal if viewport size changes
-	$(window).resize(function() {
-		setAnionGapModalPosition();
-	});
 
 	$('input[type=number]').val("");
     $('#pH').focus();
@@ -314,11 +310,25 @@ $(document).ready(function(){
             $('.albumin-addon').append(albuminUnits);
             $('.aniongap-modal').fadeIn();
             $('#sodium').focus();
+            //we change size of anion gap modal if viewport size changes
+			$(window).on('resize',function() {
+				setAnionGapModalPosition();
+				var $specifyColumn = $("#submitanion .col-sm-4")
+				if ( $specifyColumn.hasClass("col-xs-6") && $(window).width() < 520 ) {
+					$specifyColumn.addClass('col-xs-12').removeClass('col-xs-6');
+					$('.aniongap-modal').height(440);
+				}
+				if ( $specifyColumn.hasClass("col-xs-12") && $(window).width() > 520 ) {
+					$specifyColumn.addClass('col-xs-6').removeClass('col-xs-12');
+					$('.aniongap-modal').height(360);
+				}
+			});
         });
         //closes anion gap modal
         $('#closeanion').click(function(event){
         	event.preventDefault();
         	$('.aniongap-modal').fadeOut();
+        	$(window).off('resize');
         });
         //anion gap calculations
         $('#submitanion').submit(function(event){

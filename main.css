@@ -20,8 +20,12 @@ body {
 	color: white !important;
 }
 
-h1, h2, label, p, button, input[type=submit], #units, .submitted-value {
+h1, h2, h3, label, p, button, input[type=submit], #units, .submitted-value {
 	color: white;
+}
+
+h3 {
+	text-align: center;
 }
 
 p, button, input[type=submit], .submitted-value, .badge {
@@ -118,7 +122,7 @@ form, #units {
 }
 
 .aniongap-modal {
-	height: 300px;
+	height: 320px;
 	position: fixed;
 	background-color: gray;
 	display: none;
@@ -180,11 +184,18 @@ footer a:hover {
 	}
 }
 
+@media screen and (max-width: 767px) {
+	.aniongap-modal {
+		height: 360px;
+	}
+}
+
 @media screen and (max-width: 560px) {
 	.submitted-values > .container > .row > .submitted-value > span {
 		display: block !important;
 	}
 }
+
 @media screen and (max-width: 520px) {
 	.checkanion {
 		display: block;
