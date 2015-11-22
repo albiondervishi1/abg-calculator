@@ -155,6 +155,14 @@ function setAnionGapModalWidth (window) {
 	return width;
 };
 
+function albuminPlaceholder (width) {
+	if ( width >= 755 ) {
+		$('#albumin').attr("placeholder","");
+	} else {
+		$('#albumin').attr("placeholder","Only add if low");
+	}
+};
+
 $(document).ready(function(){
 
 	$('input[type=number]').val("");
@@ -308,17 +316,20 @@ $(document).ready(function(){
             setAnionGapModalPosition();
             $('.electrolyte-addon').append(anionUnits);
             $('.albumin-addon').append(albuminUnits);
+            albuminPlaceholder( $(window).width() );
             $('.aniongap-modal').fadeIn();
             $('#sodium').focus();
             //we change size of anion gap modal if viewport size changes
 			$(window).on('resize',function() {
+				windowWidth = $(window).width();
 				setAnionGapModalPosition();
+				albuminPlaceholder( windowWidth );
 				var $specifyColumn = $("#submitanion .col-sm-4")
-				if ( $specifyColumn.hasClass("col-xs-6") && $(window).width() < 520 ) {
+				if ( $specifyColumn.hasClass("col-xs-6") && windowWidth < 520 ) {
 					$specifyColumn.addClass('col-xs-12').removeClass('col-xs-6');
 					$('.aniongap-modal').height(440);
 				}
-				if ( $specifyColumn.hasClass("col-xs-12") && $(window).width() > 520 ) {
+				if ( $specifyColumn.hasClass("col-xs-12") && windowWidth > 520 ) {
 					$specifyColumn.addClass('col-xs-6').removeClass('col-xs-12');
 					$('.aniongap-modal').height(360);
 				}
