@@ -395,6 +395,8 @@ $(document).ready(function(){
                 } else {
                     var anionGap = anionGap + "pure anion gap acidosis";
                 }
+            } else if (anionGapValue < 4) {
+            	var anionGap = "Low anion gap <span class='badge'>" + anionGapValue + anionUnits + "</span>";
             } else {
                 var anionGap = "Normal anion gap <span class='badge'>" + anionGapValue + anionUnits + "</span>";
             }
