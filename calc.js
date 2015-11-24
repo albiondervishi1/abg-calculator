@@ -413,7 +413,8 @@ $(document).ready(function(){
             }
         });
         //toggle panels suggested aetiologies panels into view
-        $('.aetiologies').click(function(){
+        $('.aetiologies').click(function(event){
+        	event.preventDefault();
             if ($('.aetiologies').hasClass('suggested')) {
                 $('.suggested').addClass('closeSuggested').removeClass('suggested').text("Close Suggested Aetiologies");
                 if ((primary === respiratoryAcidosis && secondary  === metabolicAcidosis) || (primary === metabolicAcidosis && secondary  === respiratoryAcidosis) || (primary === "Equal respiratory and metabolic acidosis")) {
