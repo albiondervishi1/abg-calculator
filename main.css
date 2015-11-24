@@ -85,7 +85,7 @@ form, #units {
 	text-align: center;
 }
 
-.submitted-values {
+.submitted-values, #results > .results-table {
 	margin-bottom: 10px;
 	border-bottom: 3px solid #34B3A0;
 }

@@ -138,16 +138,26 @@
 						<h2>What you submitted:</h2>
 					</div>
 					<div class="validity" role="alert"></div>
-					<div class="respiratory">
-						<h2>Respiratory Disorder:</h2>
-						<p>Oxygenation Status: <em>Feature yet to be developed</em></p>
-						<p>Ventilatory Status: <em>Feature yet to be developed</em></p>
+					<div class="results-table">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="respiratory">
+									<h2>Respiratory Disorder:</h2>
+									<p>Oxygenation Status: <em>Feature yet to be developed</em></p>
+									<p>Ventilatory Status: <em>Feature yet to be developed</em></p>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="acidbase">
+									<h2>Acid-Base Disorder:</h2>
+									<div class="acidbase-results"></div>
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="acidbase">
-						<h2>Acid-Base Disorder:</h2>
-						<div class="acidbase-results"></div>
+					<div class="buttons">
+						<button id="reanalyse">Analyse another ABG</button>
 					</div>
-					<button id="reanalyse">Analyse another ABG</button>
 				</div>
 				<div class="disorders">
 					<div id="respiratory-acidosis" class="abdisorders">

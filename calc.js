@@ -314,8 +314,8 @@ $(document).ready(function(){
             $(".acidbase-results").append("<p class='result'><strong>Respiratory Onset:</strong> " + onset + "</p>")
         }
         if (primary != "There is no acid-base disturbance" && error_present == false) {
-            $(".acidbase").append("<div class='row' id='suggestions'><div class='col-xs-6'><a class='aetiologies suggested' href='#suggestions'>Get Suggested Aetiologies</a></div><div class='col-xs-6'><button id='reanalyse'>Analyse another ABG</button></div></div>");
-            $('#results > #reanalyse').hide();
+        	$(".buttons").append("<div class='row' id='suggestions'><div class='col-xs-6'><a class='aetiologies suggested' href='#suggestions'>Get Suggested Aetiologies</a></div><div class='col-xs-6'><button id='reanalyse'>Analyse another ABG</button></div></div>");
+        	$('#results .buttons > #reanalyse').remove();
         }
         //shows anion gap modal
         $('.checkanion').click(function(){
