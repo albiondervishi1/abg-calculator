@@ -29,7 +29,7 @@ body {
 	z-index: 1;
 }
 
-h1, h2, h3, label, p, button, input[type=submit], #units, .submitted-value {
+h1, h2, h3, label, p, li, button, input[type=submit], #units, .submitted-value {
 	color: white;
 }
 
@@ -37,7 +37,7 @@ h3 {
 	text-align: center;
 }
 
-p, button, input[type=submit], .submitted-value, .badge {
+p, li, button, input[type=submit], .submitted-value, .badge {
 	font-size: 18px;
 }
 
@@ -176,21 +176,6 @@ form, #units {
 
 .acidbase a:hover {
 	text-decoration: none;
-}
-
-footer {
-	padding-top: 40px;
-}
-
-footer a {
-	color: white;
-	font-size: 16px;
-	padding-right: 20px
-}
-
-footer a:hover {
-	text-decoration: none;
-	color: #34B3A0;
 }
 
 @media screen and (max-width: 1200px) {

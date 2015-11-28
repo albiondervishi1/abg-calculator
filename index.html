@@ -33,7 +33,6 @@
 				        	<li class="active"><a href="http://www.arterialbloodgas.com">Calculator<span class="sr-only">(current)</span></a></li>
 				            <li><a href="http://www.arterialbloodgas.com/respiratory">Respiratory Interpretation</a></li>
 	        				<li><a href="http://www.arterialbloodgas.com/acidbase">Acid-Base Interpretation</a></li>
-				        	<li><a href="http://www.arterialbloodgas.com/contact">Contact</a></li>
 				      		<li><a href="http://www.arterialbloodgas.com/disclaimer">Disclaimer</a></li>
 				      	</ul>
 				    </div>
@@ -42,75 +41,100 @@
 		</header>
 		<main>
 			<div class="mask"></div>
-			<div class="container" id="abgcalc">
-				<div class="row" id="units">
-					<div class="col-xs'12">
-						<span>Choose the appropriate units:</span>
-						<div class="btn-group label">
-							<button type="button" class="btn btn-primary active US-toggle">US</button>
-							<button type="button" class="btn btn-primary SI-toggle">SI</button>
+			<div class="container-fluid" id="abgcalc">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="row" id="units">
+							<div class="col-xs'12">
+								<span>Choose the appropriate units:</span>
+								<div class="btn-group label">
+									<button type="button" class="btn btn-primary active US-toggle">US</button>
+									<button type="button" class="btn btn-primary SI-toggle">SI</button>
+								</div>
+							</div>
 						</div>
+						<form role="form" class="form-horizontal" name="abgcalc">
+							<p class="form-control-static col-xs-2 header">Analyte</p>
+							<p class="form-control-static col-xs-7 header text-center">Values</p>
+							<p class="form-control-static col-xs-3 header">Normal Range</p>
+							<div class="form-group">
+								<label for="age" class="col-xs-2 control-label">Age</label>
+								<div class="col-xs-7">
+									<input type="number" step="1" min="1" class="form-control" id="age" name="age" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="pH" class="col-xs-2 control-label">pH</label>
+								<div class="col-xs-7">
+									<input type="number" step="0.01" min="1" class="form-control" id="pH" name="pH" required>
+								</div>
+								<p class="form-control-static col-xs-3">7.35 - 7.45</p>
+							</div>
+							<div class="form-group">
+								<label for="PaO2" class="col-xs-2 control-label">P<sub>a</sub>O<sub>2</sub></label>
+								<div class="col-xs-7">
+									<div class="input-group">
+										<input type="number" min="1" step="0.1" class="form-control" id="PaO2" name="PaO2" required>
+										<div class="input-group-addon"><span class="US">mmHg</span><span class="SI">kPa</span></div>
+									</div>
+								</div>
+								<p class="form-control-static col-xs-3 US">75 - 100</p>
+								<p class="form-control-static col-xs-3 SI">11 - 13</p>
+							</div>
+							<div class="form-group">
+								<label for="FiO2" class="col-xs-2 control-label">FiO<sub>2</sub></label>
+								<div class="col-xs-7">
+									<input type="number" min="0" max="1" step="0.01" class="form-control" id="FiO2" name="FiO2" required>
+								</div>
+								<p class="form-control-static col-xs-3">0 - 1</p>
+							</div>
+							<div class="form-group">
+								<label for="PaCO2" class="col-xs-2 control-label">P<sub>a</sub>CO<sub>2</sub></label>
+								<div class="col-xs-7">
+									<div class="input-group">
+										<input type="number" min="1" step="0.1" class="form-control" id="PaCO2" name="PaCO2">
+										<div class="input-group-addon"><span class="US">mmHg</span><span class="SI">kPa</span></div>
+									</div>
+								</div>
+								<p class="form-control-static col-xs-3 US">35 - 45</p>
+								<p class="form-control-static col-xs-3 SI">4.7 - 6.0</p>
+							</div>	
+							<div class="form-group">
+								<label for="HCO3" class="col-xs-2 control-label">HCO<sub>3</sub><sup>-</sup></label>
+								<div class="col-xs-7">
+									<div class="input-group">
+										<input type="number" min="1" step="0.1" class="form-control" id="HCO3" name="HCO3">
+										<div class='input-group-addon'>mEq/L</div>
+									</div>
+								</div>
+								<p class="form-control-static col-xs-3">22 - 26</p>
+							</div>
+							<p id="reminder">Please ensure you have chosen the right units</p>
+							<input type="submit" value="Analyse Gas">
+						</form>
+					</div>
+					<div class="col-sm-6">
+						<p>Use the smartest arterial blood gas analysis calculator on the web.</p>
+						<p>This calculator will assess:</p>
+						<ul>
+							<li>Respiratory status:</li>
+							<ul>
+								<li>Respiratory failure</li>
+								<li>A-a gradient</li>
+								<li>P<sub>a</sub>O<sub>2</sub>/FiO<sub>2</sub> ratio (also known as Carrico Index)</li>
+							</ul>
+							<br>
+							<li>Acid-base status:</li>
+							<ul>
+								<li>Primary disorder</li>
+								<li>Compensation</li>
+								<li>Secondary disorder</li>
+								<li>Anion gap - adjusting for hypoalbuminaemia</li>
+							</ul>
+						</ul>
+						<p>If you have any questions or would like to make a suggestion/correction, just send an email to info@arterialbloodgas.com</p>
 					</div>
 				</div>
-				<form role="form" class="form-horizontal" name="abgcalc">
-					<p class="form-control-static col-xs-2 header">Analyte</p>
-					<p class="form-control-static col-xs-7 header text-center">Values</p>
-					<p class="form-control-static col-xs-3 header">Normal Range</p>
-					<div class="form-group">
-						<label for="age" class="col-xs-2 control-label">Age</label>
-						<div class="col-xs-7">
-							<input type="number" step="1" min="1" class="form-control" id="age" name="age" required>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="pH" class="col-xs-2 control-label">pH</label>
-						<div class="col-xs-7">
-							<input type="number" step="0.01" min="1" class="form-control" id="pH" name="pH" required>
-						</div>
-						<p class="form-control-static col-xs-3">7.35 - 7.45</p>
-					</div>
-					<div class="form-group">
-						<label for="PaO2" class="col-xs-2 control-label">P<sub>a</sub>O<sub>2</sub></label>
-						<div class="col-xs-7">
-							<div class="input-group">
-								<input type="number" min="1" step="0.1" class="form-control" id="PaO2" name="PaO2" required>
-								<div class="input-group-addon"><span class="US">mmHg</span><span class="SI">kPa</span></div>
-							</div>
-						</div>
-						<p class="form-control-static col-xs-3 US">75 - 100</p>
-						<p class="form-control-static col-xs-3 SI">11 - 13</p>
-					</div>
-					<div class="form-group">
-						<label for="FiO2" class="col-xs-2 control-label">FiO<sub>2</sub></label>
-						<div class="col-xs-7">
-							<input type="number" min="0" max="1" step="0.01" class="form-control" id="FiO2" name="FiO2" required>
-						</div>
-						<p class="form-control-static col-xs-3">0 - 1</p>
-					</div>
-					<div class="form-group">
-						<label for="PaCO2" class="col-xs-2 control-label">P<sub>a</sub>CO<sub>2</sub></label>
-						<div class="col-xs-7">
-							<div class="input-group">
-								<input type="number" min="1" step="0.1" class="form-control" id="PaCO2" name="PaCO2">
-								<div class="input-group-addon"><span class="US">mmHg</span><span class="SI">kPa</span></div>
-							</div>
-						</div>
-						<p class="form-control-static col-xs-3 US">35 - 45</p>
-						<p class="form-control-static col-xs-3 SI">4.7 - 6.0</p>
-					</div>	
-					<div class="form-group">
-						<label for="HCO3" class="col-xs-2 control-label">HCO<sub>3</sub><sup>-</sup></label>
-						<div class="col-xs-7">
-							<div class="input-group">
-								<input type="number" min="1" step="0.1" class="form-control" id="HCO3" name="HCO3">
-								<div class='input-group-addon'>mEq/L</div>
-							</div>
-						</div>
-						<p class="form-control-static col-xs-3">22 - 26</p>
-					</div>
-					<p id="reminder">Please ensure you have chosen the right units</p>
-					<input type="submit" value="Analyse Gas">
-				</form>	
 				<div id="results">
 					<div class="aniongap-modal">
 						<a href="#" id='closeanion'>&times;</a>
@@ -337,11 +361,6 @@
 				</div>
 			</div>
 		</main>
-		<footer>
-			<div class="container">
-				<p>DISCLAIMER: The author or host make no claim as to the accuracy of the results. No party involved in the preparation or publication of this calculator and/or website shall be liable for any special, consequential or exemplary damages, in whole or in part, from any use of or reliance upon this material.</p>
-			</div>
-		</footer>
 		<!--jQuery-->
 		<script src="jquery.js"></script>
 		<!--Bootstrap JS-->

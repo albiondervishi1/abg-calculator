@@ -501,8 +501,9 @@ $(document).ready(function(){
                 $('#results .panel').remove();
             }
         });
-        $("form[name=abgcalc]").fadeOut("600");
-        $("#results").delay("600").slideDown("600");
+        $("#abgcalc > .row").slideUp("600");
+        $("#abgcalc").addClass("container").removeClass("container-fluid");
+        $("#results").slideDown("600");
         //goes to home page
         $('#reanalyse').click(function(){
         	window.location = "index.html";
