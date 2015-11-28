@@ -40,14 +40,8 @@ function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClas
     $('#pH').focus();
 };
 
-//Appending oxygen status to results
-function appendOxygenStatus (status) {
-	$('.respiratory').append("<p class='result'><strong>Oxygenation Status:</strong> " + status + "</p>");
-};
-
-//Appending ventilation status to results
-function appendVentilationStatus (status) {
-	$('.respiratory').append("<p class='result'><strong>Ventilatory Status:</strong> " + status + "</p>");
+function respiratoryStatus(status) {
+	$('.respiratory').append("<p class='result'><strong>Respiratory Status:</strong> " + status + "</p>");
 };
 
 function alveolarArterialGradient(age,FiO2,PaO2,PaCO2) {
@@ -273,17 +267,20 @@ $(document).ready(function(){
         }
         //assessing respiratory status
         if ( PaO2 < 60 ) {
-        	appendOxygenStatus("Hypoxaemia");
+        	if (PaCO2 > 50) {
+        		respiratoryStatus("Type 2 Respiratory Failure");
+        	} else {
+        		respiratoryStatus("Type 1 Respiratory Failure");
+        	}
         } else {
-        	appendOxygenStatus("Adequate");
-        }
-        if ( PaCO2 > 50 ) {
-        	appendVentilationStatus("Hypercapnia");
-        } else if ( PaCO2 <  35 ) {
-        	appendVentilationStatus("Hypocapnia");
-        } else {
-        	appendVentilationStatus("Adequate");
-        }
+	        if ( PaCO2 > 50 ) {
+	        	respiratoryStatus("Hypercapnia");
+	        } else if ( PaCO2 <  35 ) {
+	        	respiratoryStatus("Hypocapnia");
+	        } else {
+	        	respiratoryStatus("Normal");
+	        }
+	    }
 
        	alveolarArterialGradient(age,FiO2,PaO2,PaCO2);
 
