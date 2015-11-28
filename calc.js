@@ -201,6 +201,7 @@ $(document).ready(function(){
         //setting analyte values
         var pH = getStandardisedValues("pH",false);
         var PaO2 = getStandardisedValues("PaO2",true);
+        var FiO2 = getStandardisedValues("FiO2",false);
         var PaCO2 = getStandardisedValues("PaCO2",true);
         var HCO3 = getStandardisedValues("HCO3",false);
 
@@ -220,16 +221,19 @@ $(document).ready(function(){
         }
         $('.submitted-values').append("<div class='container values-row'>\
                                             <div class='row'>\
-                                                <div class='col-xs-6 col-sm-3 submitted-value'>\
+                                                <div class='col-xs-6 col-sm-2 submitted-value'>\
                                                     pH <span class='badge'> " + pH + " </span>\
                                                 </div>\
-                                                <div class='col-xs-6 col-sm-3 submitted-value'>\
+                                                <div class='col-xs-6 col-sm-2 submitted-value'>\
                                                     P<sub>a</sub>O<sub>2</sub> <span class='badge'>" + (PaO2 * conversionFactor).toFixed(1)  + units + "</span>\
                                                 </div>\
-                                                <div class='col-xs-6 col-sm-3 submitted-value'>\
+                                                <div class='col-xs-6 col-sm-2 submitted-value'>\
+                                                    FiO<sub>2</sub> <span class='badge'>" + FiO2 + "</span>\
+                                                </div>\
+                                                <div class='col-xs-6 col-sm-2 submitted-value'>\
                                                     P<sub>a</sub>CO<sub>2</sub> <span class='badge'>" + (PaCO2 * conversionFactor).toFixed(1) + units + "</span>\
                                                 </div>\
-                                                <div class='col-xs-6 col-sm-3 submitted-value'>\
+                                                <div class='col-xs-6 col-sm-2 submitted-value'>\
                                                     HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + anionUnits + "</span>\
                                                 </div>\
                                             </div>\
