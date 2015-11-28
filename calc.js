@@ -40,6 +40,28 @@ function unitToggle (thisUnitToggle, otherUnitToggle,thisUnitClass,otherUnitClas
     $('#pH').focus();
 };
 
+//Appending oxygen status to results
+function appendOxygenStatus (status) {
+	$('.respiratory').append("<p class='result'><strong>Oxygenation Status:</strong> " + status + "</p>");
+};
+
+//Appending ventilation status to results
+function appendVentilationStatus (status) {
+	$('.respiratory').append("<p class='result'><strong>Ventilatory Status:</strong> " + status + "</p>");
+};
+
+function alveolarArterialGradient(age,FiO2,PaO2,PaCO2) {
+	var PAO2 = FiO2 * (760-47) - (PaCO2 / 0.8);
+	var gradient = PAO2 - PaO2;
+	var upperLimit = age / 4 + 4;
+	if (gradient > upperLimit) {
+		var result = "Elevated";
+	} else {
+		var result = "Normal";
+	}
+	$('.respiratory').append("<p class='result'><strong>A-a Gradient:</strong> "+ result + " for age group <span class='badge'>" + gradient.toFixed(0) + "mmHg</span></p>");
+};
+
 //Get initial values on form submission
 function getStandardisedValues(analyte,requiresConversion) {
     inputField = "input[name=" + analyte + "]";
@@ -174,7 +196,7 @@ function closeAnionModal(event) {
 $(document).ready(function(){
 
 	$('input[type=number]').val("");
-    $('#pH').focus();
+    $('#age').focus();
     //setting analyte units
     $('.SI').hide();
     loadPreference();
@@ -204,6 +226,7 @@ $(document).ready(function(){
         var FiO2 = getStandardisedValues("FiO2",false);
         var PaCO2 = getStandardisedValues("PaCO2",true);
         var HCO3 = getStandardisedValues("HCO3",false);
+        var age = getStandardisedValues("age",false);
 
         //calculating analyte percentage changes
         var PaCO2Change = Math.abs(PaCO2 - 40);
@@ -221,7 +244,9 @@ $(document).ready(function(){
         }
         $('.submitted-values').append("<div class='values-row'>\
                                             <div class='row'>\
-                                            	<div class='col-sm-1 hidden-xs submitted-value'></div>\
+                                            	<div class='col-xs-6 col-sm-2 submitted-value'>\
+                                                    Age <span class='badge'> " + Math.round(age) + " </span>\
+                                                </div>\
                                                 <div class='col-xs-6 col-sm-2 submitted-value'>\
                                                     pH <span class='badge'> " + pH + " </span>\
                                                 </div>\
@@ -237,10 +262,8 @@ $(document).ready(function(){
                                                 <div class='col-xs-6 col-sm-2 submitted-value'>\
                                                     HCO<sub>3</sub><sup>-</sup> <span class='badge'>" + HCO3 + anionUnits + "</span>\
                                                 </div>\
-                                                <div class='col-sm-1 hidden-xs submitted-value'></div>\
                                             </div>\
                                         </div>");
-        
         //checking validity of sample
         var calculatedH = (24 * PaCO2) / HCO3;
         var calculatedpH = parseFloat(((-Math.log10(calculatedH / 1000000000)).toFixed(2)));
@@ -248,6 +271,25 @@ $(document).ready(function(){
             $('.validity').addClass('alert alert-danger');
             $('.validity').html("<strong>Caution: </strong>Calculated pH is " + calculatedpH + " using a modified Henderson-Hasselbach equation. If this differs significantly from the ABG pH then your ABG might be invalid.");
         }
+        //assessing respiratory status
+        if ( PaO2 < 60 ) {
+        	appendOxygenStatus("Hypoxaemia");
+        } else {
+        	appendOxygenStatus("Adequate");
+        }
+        if ( PaCO2 > 50 ) {
+        	appendVentilationStatus("Hypercapnia");
+        } else if ( PaCO2 <  35 ) {
+        	appendVentilationStatus("Hypocapnia");
+        } else {
+        	appendVentilationStatus("Adequate");
+        }
+
+       	alveolarArterialGradient(age,FiO2,PaO2,PaCO2);
+
+       	//adding PaO2/FiO2 ratio
+       	$('.respiratory').append("<p class='result'><strong>P<sub>a</sub>O<sub>2</sub>/FiO<sub>2</sub> ratio:</strong> <span class='badge'>" + PaO2 / FiO2 + "mmHg</span></p>");
+
         //acidaemia pathway
         if (pH < 7.35) {
                 if (PaCO2 > 45 && (HCO3 >= 22 || PaCO2PercentageChange > HCO3PercentageChange)) {
@@ -367,14 +409,14 @@ $(document).ready(function(){
             //calculating anion gap depending on albumin level and tabulating submitted values
             if ( isNaN(albumin) ) {
             	var anionGapValue = sodium - chloride - HCO3;
-            	$('.values-row .row').append("<div class='col-xs-6 col-sm-3'></div>\
+            	$('.values-row .row').append("<div class='hidden-xs col-sm-3'></div>\
             								<div class='col-xs-6 col-sm-3 submitted-value'>\
 	                                            Na<sup>+</sup> <span class='badge'>" + sodium + anionUnits + "</span>\
 	                                        </div>\
 	                                        <div class='col-xs-6 col-sm-3 submitted-value'>\
 	                                            Cl<sup>-</sup> <span class='badge'>" + chloride + anionUnits + "</span>\
 	                                        </div>\
-	                                        <div class='col-xs-6 col-sm-3'></div>");
+	                                        <div class='hidden-xs col-sm-3'></div>");
             } else {
             	var anionGapValue = Math.round( (sodium - chloride - HCO3) + (2.5 * (4 - albumin) ) );
             	$('.values-row .row').append("<div class='col-xs-6 col-sm-4 submitted-value'>\
