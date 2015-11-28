@@ -194,7 +194,7 @@ footer a:hover {
 }
 
 @media screen and (max-width: 1200px) {
-	.submitted-values > .container > .row > .submitted-value > span {
+	.submitted-values > .values-row > .row > .submitted-value > span {
 		display: block !important;
 	}
 }
@@ -206,7 +206,7 @@ footer a:hover {
 }
 
 @media screen and (max-width: 560px) {
-	.submitted-values > .container > .row > .submitted-value > span {
+	.submitted-values > .values-row > .row > .submitted-value > span {
 		display: block !important;
 	}
 }
