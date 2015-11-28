@@ -229,15 +229,11 @@ $(document).ready(function(){
         
         //checking validity of sample
         var calculatedH = (24 * PaCO2) / HCO3;
-        alert("calculated H: " + calculatedH + " " + typeof calculatedH);
         var calculatedpH = parseFloat(((-Math.log10(calculatedH / 1000000000)).toFixed(2)));
-        alert("calculatedpH: " + calculatedpH + typeof calculatedpH);
-        alert("Is pH same as calculatedpH?: " + (pH === calculatedpH));
         if (pH !== calculatedpH) {
             $('.validity').addClass('alert alert-danger');
             $('.validity').html("<strong>Caution: </strong>Calculated pH is " + calculatedpH + " using a modified Henderson-Hasselbach equation. If this differs significantly from the ABG pH then your ABG might be invalid.");
         }
-
         //acidaemia pathway
         if (pH < 7.35) {
                 if (PaCO2 > 45 && (HCO3 >= 22 || PaCO2PercentageChange > HCO3PercentageChange)) {
@@ -253,8 +249,6 @@ $(document).ready(function(){
                     primary = "Equal respiratory and metabolic acidosis";
                     secondary = noDisorder;
                 }
-            alert("Primary:" + primary + " " + typeof primary);
-            alert("Secondary: " + secondary + " " + typeof secondary);
         //alkalaemia pathway
         } else if (pH > 7.45) {
                 if (PaCO2 < 35 && (HCO3 <= 26 || PaCO2PercentageChange > HCO3PercentageChange)) {
@@ -269,8 +263,6 @@ $(document).ready(function(){
                 } else {
                     var primary = "Equal respiratory and metabolic alkalosis";
                 }
-            alert("Primary: " + primary + typeof primary);
-            alert("Secondary: " + secondary + " " + typeof secondary);
         //normal pH pathway
         } else {
             if (PaCO2 > 45 || HCO3 > 26) {
@@ -299,9 +291,6 @@ $(document).ready(function(){
                 primary = "There is no acid-base disturbance";
                 secondary = noDisorder;
             }
-            alert("Primary: " + primary + " " + typeof primary);
-            alert("Secondary: " + secondary + " " + typeof secondary);
-            alert(primary !== "There is no acid-base disturbance");
         }
         //We display acid-base result to page
         if (secondary != noDisorder && error_present == false) {
