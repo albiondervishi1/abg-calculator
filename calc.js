@@ -287,8 +287,6 @@ $(document).ready(function(){
        	//adding PaO2/FiO2 ratio
        	$('.respiratory').append("<p class='result'><strong>P<sub>a</sub>O<sub>2</sub>/FiO<sub>2</sub> ratio:</strong> <span class='badge'>" + PaO2 / FiO2 + "mmHg</span></p>");
 
-       	$(".respiratory").append("<div class='row' id='respiratory-suggestions'><a class='aetiologies suggested' href='#suggestions'>Get Suggested Aetiologies</a></div>");
-
         //acidaemia pathway
         if (pH < 7.35) {
                 if (PaCO2 > 45 && (HCO3 >= 22 || PaCO2PercentageChange > HCO3PercentageChange)) {
@@ -356,9 +354,6 @@ $(document).ready(function(){
         }
         if (onset != "" && error_present == false && (primary == respiratoryAlkalosis || primary == respiratoryAcidosis)) {
             $(".acidbase-results").append("<p class='result'><strong>Respiratory Onset:</strong> " + onset + "</p>")
-        }
-        if (primary != "There is no acid-base disturbance" && error_present == false) {
-        	$(".acidbase-results").append("<div class='row' id='acidbase-suggestions'><a class='aetiologies suggested' href='#suggestions'>Get Suggested Aetiologies</a></div>");
         }
         //shows anion gap modal
         $('.checkanion').click(function(){
