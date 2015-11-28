@@ -186,6 +186,14 @@ $(document).ready(function(){
         unitToggle(".US-toggle",".SI-toggle",'.US','.SI',1,0.1,"mmHg");
     });
 
+    //validating FiO2 input
+    $('#FiO2').change(function(){
+    	var input = $(this).val()
+    	if ( input > 1) {
+    		$(this).val(input / 100);
+    	}
+    });
+
     $('form[name=abgcalc]').submit(function(event){
         event.preventDefault();
         $('#units').hide();
