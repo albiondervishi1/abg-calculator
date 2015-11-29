@@ -68,7 +68,7 @@ function getStandardisedValues(analyte,requiresConversion) {
 
 //Respiratory disorder onset
 function respiratoryOnset(calculatedH,PaCO2Change) {
-    var onsetRatio = (Math.abs( (40 - calculatedH) / ( PaCO2Change ) );
+    var onsetRatio = Math.abs( (40 - calculatedH) / ( PaCO2Change ) );
     if (onsetRatio < 0.3) {
         return "Chronic";
     } else if (onsetRatio > 0.8) {
@@ -182,9 +182,18 @@ function albuminPlaceholder (width) {
 
 function closeAnionModal(event) {
 	event.preventDefault();
+    preventDoubleSubmissionOnPressingEnter();
 	$('.aniongap-modal').fadeOut();
 	$('.mask').css({'width': '0', 'height': '0' });
 	$(window).off('resize');
+};
+
+function preventDoubleSubmissionOnPressingEnter() {
+    $(this).keypress(function(event) {
+        if (event.which == 13 ) {
+            event.preventDefault();
+        }
+    });
 };
 
 $(document).ready(function(){
@@ -212,6 +221,7 @@ $(document).ready(function(){
 
     $('form[name=abgcalc]').submit(function(event){
         event.preventDefault();
+        preventDoubleSubmissionOnPressingEnter();
         $('#units').hide();
 
         //setting analyte values
