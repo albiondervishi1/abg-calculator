@@ -67,8 +67,8 @@ function getStandardisedValues(analyte,requiresConversion) {
 };
 
 //Respiratory disorder onset
-function respiratoryOnset(calculatedH,PaCO2PercentageChange) {
-    var onsetRatio = (Math.abs((40 - calculatedH)/40))/(PaCO2PercentageChange);
+function respiratoryOnset(calculatedH,PaCO2Change) {
+    var onsetRatio = (Math.abs( (40 - calculatedH) / ( PaCO2Change ) );
     if (onsetRatio < 0.3) {
         return "Chronic";
     } else if (onsetRatio > 0.8) {
@@ -291,7 +291,7 @@ $(document).ready(function(){
         if (pH < 7.35) {
                 if (PaCO2 > 45 && (HCO3 >= 22 || PaCO2PercentageChange > HCO3PercentageChange)) {
                     primary = respiratoryAcidosis;
-                    onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
+                    onset = respiratoryOnset(calculatedH,PaCO2Change);
                     secondary = respiratoryAcidosisCompensation(onset,PaCO2Change,HCO3);
                 } else if (HCO3 < 22 && (PaCO2 <= 45 || PaCO2PercentageChange < HCO3PercentageChange)) {
                     primary = metabolicAcidosis;
@@ -306,7 +306,7 @@ $(document).ready(function(){
         } else if (pH > 7.45) {
                 if (PaCO2 < 35 && (HCO3 <= 26 || PaCO2PercentageChange > HCO3PercentageChange)) {
                     var primary = respiratoryAlkalosis;
-                    onset = respiratoryOnset(calculatedH,PaCO2PercentageChange);
+                    onset = respiratoryOnset(calculatedH,PaCO2Change);
                     secondary = respiratoryAlkalosisCompensation(onset,PaCO2Change,HCO3);
                 } else if (HCO3 > 26 && (PaCO2 >= 35 || PaCO2PercentageChange < HCO3PercentageChange)) {
                     var primary = metabolicAlkalosis;
