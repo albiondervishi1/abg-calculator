@@ -267,13 +267,13 @@ $(document).ready(function(){
         }
         //assessing respiratory status
         if ( PaO2 < 60 ) {
-        	if (PaCO2 > 50) {
+        	if (PaCO2 > 45) {
         		respiratoryStatus("Type 2 Respiratory Failure");
         	} else {
         		respiratoryStatus("Type 1 Respiratory Failure");
         	}
         } else {
-	        if ( PaCO2 > 50 ) {
+	        if ( PaCO2 > 45 ) {
 	        	respiratoryStatus("Hypercapnia");
 	        } else if ( PaCO2 <  35 ) {
 	        	respiratoryStatus("Hypocapnia");
