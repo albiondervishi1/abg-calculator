@@ -295,7 +295,7 @@ $(document).ready(function(){
        	alveolarArterialGradient(age,FiO2,PaO2,PaCO2);
 
        	//adding PaO2/FiO2 ratio
-       	$('.respiratory').append("<p class='result'><strong>P<sub>a</sub>O<sub>2</sub>/FiO<sub>2</sub> ratio:</strong> <span class='badge'>" + PaO2 / FiO2 + "mmHg</span></p>");
+       	$('.respiratory').append("<p class='result'><strong>P<sub>a</sub>O<sub>2</sub>/FiO<sub>2</sub> ratio:</strong> <span class='badge'>" + (PaO2 / FiO2).toFixed(0) + "</span></p>");
 
         //acidaemia pathway
         if (pH < 7.35) {
