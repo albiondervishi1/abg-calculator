@@ -96,7 +96,7 @@ form, #units {
 	padding: 10px 0px;
 }
 
-#results, .disorders, .abdisorders {
+#results, .disorders {
 	display: none;
 }
 
