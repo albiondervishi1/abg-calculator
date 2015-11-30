@@ -464,57 +464,6 @@ $(document).ready(function(){
                 }
             }
         });
-        //toggle panels suggested aetiologies panels into view
-        $('.aetiologies').click(function(event){
-        	event.preventDefault();
-            if ($('.aetiologies').hasClass('suggested')) {
-                $('.suggested').addClass('closeSuggested').removeClass('suggested').text("Close Suggested Aetiologies");
-                if ((primary === respiratoryAcidosis && secondary  === metabolicAcidosis) || (primary === metabolicAcidosis && secondary  === respiratoryAcidosis) || (primary === "Equal respiratory and metabolic acidosis")) {
-                    $('#results').append($('#respacidosis-metacidosis').html());
-                }
-                if ((primary === respiratoryAlkalosis && secondary  === metabolicAlkalosis) || (primary === metabolicAlkalosis && secondary  === respiratoryAlkalosis) || (primary === "Equal respiratory and metabolic alkalosis")) {
-                    $('#results').append($('#respalkalosis-metalkalosis').html());
-                }
-                if ((primary === respiratoryAcidosis && secondary  === "Metabolic alkalosis (fully compensating)") || (primary === metabolicAlkalosis && secondary  === "Respiratory acidosis (fully compensating)") || (primary === "Equal respiratory acidosis and metabolic alkalosis")) {
-                    $('#results').append($('#respacidosis-metalkalosis').html());
-                }
-                if ((primary === respiratoryAlkalosis && secondary  === "Metabolic acidosis (fully compensating)") || (primary === metabolicAcidosis && secondary  === "Respiratory alkalosis (fully compensating)") || (primary === "Equal respiratory alkalosis and metabolic acidosis")) {
-                    $('#results').append($('#respalkalosis-metacidosis').html());
-                }
-                if (primary === respiratoryAcidosis) {
-                    $('#results').append($('#respiratory-acidosis').html());
-                }
-                if (primary === respiratoryAlkalosis) {
-                    $('#results').append($('#respiratory-alkalosis').html());
-                }
-                if (primary === metabolicAcidosis) {
-                    $('#results').append($('#metabolic-acidosis').html());
-                }
-                if (primary === metabolicAlkalosis) {
-                    $('#results').append($('#metabolic-alkalosis').html());
-                }
-                if (secondary === respiratoryAcidosis) {
-                    $('#results').append($('#respiratory-acidosis').html());
-                }
-                if (secondary === respiratoryAlkalosis) {
-                    $('#results').append($('#respiratory-alkalosis').html());
-                }
-                if (secondary === metabolicAcidosis) {
-                    $('#results').append($('#metabolic-acidosis').html());
-                }
-                if (secondary === metabolicAlkalosis) {
-                    $('#results').append($('#metabolic-alkalosis').html());
-                }
-                if (anionGapRatio > 2) {
-                    $('#results').append($('#metabolic-alkalosis').html());
-                }
-            } else {
-                $('.closeSuggested').addClass('suggested');
-                $('.closeSuggested').text("Get Suggested Aetiologies");
-                $('.closeSuggested').removeClass('closeSuggested');
-                $('#results .panel').remove();
-            }
-        });
         $("#abgcalc > .row").slideUp("600");
         $("#abgcalc").addClass("container").removeClass("container-fluid");
         $("#results").slideDown("600");

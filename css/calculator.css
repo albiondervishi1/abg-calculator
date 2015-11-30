@@ -96,11 +96,11 @@ form, #units {
 	padding: 10px 0px;
 }
 
-#results, .disorders {
+#results {
 	display: none;
 }
 
-#reanalyse, input[type=submit], .aetiologies, .modal-button {
+#reanalyse, input[type=submit], .modal-button {
 	border: none;
 	border-radius: 2px;
 	padding: 10px 20px;
@@ -159,17 +159,7 @@ form, #units {
 	color: #34B3A0;
 }
 
-.aetiologies {
-	text-align: center;
-	max-width: 280px;
-}
-
-.aetiologies, .aetiologies:link {
-	text-decoration: none;
-	color: white;
-}
-
-#reanalyse:hover, input[type=submit]:hover, .aetiologies:hover, .modal-button:hover, .checkanion:hover {
+#reanalyse:hover, input[type=submit]:hover, .modal-button:hover, .checkanion:hover {
 	color: #34B3A0;
 	background-color: white;
 }
