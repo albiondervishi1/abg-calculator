@@ -47,13 +47,17 @@ function respiratoryStatus(status) {
 function alveolarArterialGradient(age,FiO2,PaO2,PaCO2) {
 	var PAO2 = FiO2 * (760-47) - (PaCO2 / 0.8);
 	var gradient = PAO2 - PaO2;
-	var upperLimit = age / 4 + 4;
-	if (gradient > upperLimit) {
-		var result = "Elevated";
-	} else {
-		var result = "Normal";
-	}
-	$('.respiratory').append("<p class='result'><strong>A-a Gradient:</strong> "+ result + " for age group <span class='badge'>" + gradient.toFixed(0) + "mmHg</span></p>");
+    if ( gradient >= 0 ) {
+    	var upperLimit = age / 4 + 4;
+    	if (gradient > upperLimit) {
+    		var result = "Elevated";
+    	} else {
+    		var result = "Normal";
+    	}
+    	$('.respiratory').append("<p class='result'><strong>A-a Gradient:</strong> "+ result + " for age group <span class='badge'>" + gradient.toFixed(0) + "mmHg</span></p>");
+    } else {
+        $('.respiratory').append("<p class='result'><strong>A-a Gradient:</strong> The result is a negative value. This is incorrect. Was the patient on a different FiO<sub>2</sub> before or when the sample was taken? Otherwise a technical or transcription error might have occurred.</p>");
+    }
 };
 
 //Get initial values on form submission
