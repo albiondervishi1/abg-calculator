@@ -40,3 +40,7 @@ p, li {
 table {
 	background: #EEEEEE;
 }
+
+.panel-body li {
+	color: #204056;
+}
