@@ -192,3 +192,9 @@ form, #units {
 		margin: auto;
 	}
 }
+
+@media screen and (max-width: 400px) {
+	.form-group > .form-control-static {
+		font-size: 13px;
+	}
+}
