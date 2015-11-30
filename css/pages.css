@@ -21,7 +21,7 @@ body {
 	color: white !important;
 }
 
-h1, p, li {
+h1, p, li, a {
 	color: white;
 }
 
@@ -29,7 +29,7 @@ h2 {
 	text-align: center;
 }
 
-h2, h3 {
+h2, h3, a:hover {
 	color: #34B3A0;
 }
 
